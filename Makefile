@@ -34,3 +34,4 @@ ctfp-print-agda:
 
 lint:
 	$(foreach file, $(call rwildcard,$(shell dirname "$(INPUT)"),*.tex), latexindent -l -w $(file);)
+
