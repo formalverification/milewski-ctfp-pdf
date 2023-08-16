@@ -26,3 +26,4 @@ out/*
 *.toc
 *.agdai
 .auctex-auto
+*.orig
