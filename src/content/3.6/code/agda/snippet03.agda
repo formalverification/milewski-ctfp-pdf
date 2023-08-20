@@ -1,4 +1,6 @@
-record Monoid (m : Type 𝑢) : Set (usuc 𝑢) where
+open import Relation.Binary.PropositionalEquality using (_≡_)
+
+record Monoid (m : Set) : Set where
   field
     unit     : m
     _⊕_      : m → m → m
