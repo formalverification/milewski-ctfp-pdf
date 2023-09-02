@@ -284,20 +284,20 @@ open import Relation.Binary.PropositionalEquality using (_≡_)
 record Category : Set where
   field
     -- types
-    Obj : Set                                    -- objects
-    Hom : (source : Obj) → (target : Obj) → Set  -- arrow between objects
+    Obj : Set              -- objects
+    Hom : (source : Obj)   -- (homo-) morphisms
+        → (target : Obj)   -- arrows between source and target object
+        → Set
 
     -- operations
-    id : ∀ {A : Obj} → Hom A A            -- identity arrow
-    _comp_ : ∀ {A B C : Obj}
-           → Hom B C → Hom A B → Hom A C  -- composition of arrows
+    id : ∀ {A : Obj} → Hom A A                           -- identity
+    _⋆_ : ∀ {A B C : Obj} → Hom B C → Hom A B → Hom A C  -- composition
 
     -- laws
-    leftIdentity  : {A B : Obj} (f : Hom A B) → (id comp f) ≡ f
-    rightIdentity : {A B : Obj} (f : Hom A B) → (f comp id) ≡ f
-    associativity : {A B C D : Obj}
-                    (f : Hom A B) (g : Hom B C) (h : Hom C D)
-                  → (h comp g) comp f ≡ h comp (g comp f)
+    IdentityL : ∀ {A B : Obj} (f : Hom A B) → (id ⋆ f) ≡ f
+    IdentityR : ∀ {A B : Obj} (f : Hom A B) → (f ⋆ id) ≡ f
+    Associativity : ∀ {A B C D : Obj} (f : Hom A B) (g : Hom B C) (h : Hom C D)
+                  → (h ⋆ g) ⋆ f ≡ h ⋆ (g ⋆ f)
 \end{snip}
 
 \end{enumerate}
