@@ -270,4 +270,33 @@ advantages of your programming paradigm.
         morphisms?
   \item
         When is a directed graph a category?
+
+\section{Formal verification}
+
+In proof assitants like Agda it is possible to write code that express
+definitions, constructions and proofs from mathematics. The notion of category
+can be expressed as:
+
+\begin{snip}{agda}
+open import Relation.Binary.PropositionalEquality using (_≡_)
+
+record Category : Set where
+  field
+    -- types
+    Obj : Set                                    -- objects
+    Hom : (source : Obj) → (target : Obj) → Set  -- arrow between objects
+
+    -- operations
+    id : ∀ {A : Obj} → Hom A A            -- identity arrow
+    _comp_ : ∀ {A B C : Obj}
+           → Hom B C → Hom A B → Hom A C  -- composition of arrows
+
+    -- laws
+    leftIdentity  : {A B : Obj} (f : Hom A B) → (id comp f) ≡ f
+    rightIdentity : {A B : Obj} (f : Hom A B) → (f comp id) ≡ f
+    associativity : {A B C D : Obj}
+                    (f : Hom A B) (g : Hom B C) (h : Hom C D)
+                  → (h comp g) comp f ≡ h comp (g comp f)
+\end{snip}
+
 \end{enumerate}
