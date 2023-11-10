@@ -2,52 +2,40 @@
   description = "Category Theory for Programmers";
 
   inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
+  inputs.systems.url = "github:nix-systems/default";
 
-  outputs = inputs @ {
-    self,
-    flake-parts,
-    nixpkgs,
-  }:
-    flake-parts.lib.mkFlake {inherit inputs;} {
-      systems = [
-        "x86_64-linux"
-        "x86_64-darwin"
-        "aarch64-linux"
-        "aarch64-darwin"
-      ];
+  outputs = inputs@{ self, flake-parts, nixpkgs, ... }:
+    flake-parts.lib.mkFlake { inherit inputs; } {
+      systems = import inputs.systems;
 
-      perSystem = {
-        config,
-        pkgs,
-        system,
-        ...
-      }: let
-        inherit (nixpkgs) lib;
+      perSystem = { config, pkgs, system, lib, ... }:
+        let
+          pkgs = nixpkgs.legacyPackages.${system};
 
-        pkgs = nixpkgs.legacyPackages.${system};
+          ########################################################################
+          # LaTeX Font
+          inconsolata-lgc-latex = pkgs.stdenvNoCC.mkDerivation {
+            name = "inconsolata-lgc-latex";
+            pname = "inconsolata-lgc-latex";
 
-        ########################################################################
-        # LaTeX Font
-        inconsolata-lgc-latex = pkgs.stdenvNoCC.mkDerivation {
-          name = "inconsolata-lgc-latex";
-          pname = "inconsolata-lgc-latex";
+            src = pkgs.inconsolata-lgc;
 
-          src = pkgs.inconsolata-lgc;
+            dontConfigure = true;
+            sourceRoot = ".";
 
-          dontConfigure = true;
-          sourceRoot = ".";
+            installPhase = ''
+              runHook preInstall
 
-          installPhase = ''
-            runHook preInstall
+              find $src -name '*.ttf' -exec install -m644 -Dt $out/fonts/truetype/public/inconsolata-lgc/ {} \;
+              find $src -name '*.otf' -exec install -m644 -Dt $out/fonts/opentype/public/inconsolata-lgc/ {} \;
 
-            find $src -name '*.ttf' -exec install -m644 -Dt $out/fonts/truetype/public/inconsolata-lgc/ {} \;
-            find $src -name '*.otf' -exec install -m644 -Dt $out/fonts/opentype/public/inconsolata-lgc/ {} \;
+              runHook postInstall
+            '';
 
-            runHook postInstall
-          '';
+            tlType = "run";
+          };
 
-          tlType = "run";
-        };
+        
         julia-mono-latex = pkgs.stdenvNoCC.mkDerivation {
           name = "julia-mono-latex";
           pname = "julia-mono-latex";
@@ -192,34 +180,43 @@
                 runHook postBuild
               '';
 
-              installPhase = "install -m 0644 -vD ctfp.pdf \"$out/${fullname}.pdf\"";
+              installPhase = "
+                runHook preInstall
+
+                install -m 0644 -vD ctfp.pdf \"$out/${fullname}.pdf\"
+
+                runHook postInstall
+              ";
 
               passthru.packageName = fullname;
             });
 
-        editions = [null "agda" "scala" "ocaml" "reason"];
-        variants = [null "print"];
-      in rec {
-        formatter = pkgs.alejandra;
+          editions = [ null "agda" "scala" "ocaml" "reason" ];
+          variants = [ null "print" ];
+        in
+        {
+          formatter = pkgs.nixpkgs-fmt;
 
-        packages = lib.listToAttrs (lib.concatMap (variant:
-          map (edition: rec {
-            name = value.packageName;
-            value = mkLatex variant edition;
-          })
-          editions)
-        variants);
+          packages = lib.listToAttrs (lib.concatMap
+            (variant:
+              map
+                (edition: rec {
+                  value = mkLatex variant edition;
+                  name = value.packageName;
+                })
+                editions)
+            variants);
 
-        # nix develop .
-        devShells.default = pkgs.mkShellNoCC (commonAttrs
-          // {
+          # nix develop .
+          devShells.default = pkgs.mkShellNoCC (commonAttrs
+            // {
             nativeBuildInputs =
               commonAttrs.nativeBuildInputs
-              ++ [
+                ++ [
                 pkgs.git
                 pkgs.gnumake
               ];
           });
-      };
+        };
     };
 }
