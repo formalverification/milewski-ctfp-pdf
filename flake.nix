@@ -35,127 +35,128 @@
             tlType = "run";
           };
 
-        
-        julia-mono-latex = pkgs.stdenvNoCC.mkDerivation {
-          name = "julia-mono-latex";
-          pname = "julia-mono-latex";
 
-          src = pkgs.julia-mono;
+          julia-mono-latex = pkgs.stdenvNoCC.mkDerivation {
+            name = "julia-mono-latex";
+            pname = "julia-mono-latex";
 
-          dontConfigure = true;
-          sourceRoot = ".";
+            src = pkgs.julia-mono;
 
-          installPhase = ''
-            runHook preInstall
+            dontConfigure = true;
+            sourceRoot = ".";
 
-            find $src -name '*.ttf' -exec install -m644 -Dt $out/fonts/truetype/public/julia-mono/ {} \;
+            installPhase = ''
+              runHook preInstall
 
-            runHook postInstall
-          '';
+              find $src -name '*.ttf' -exec install -m644 -Dt $out/fonts/truetype/public/julia-mono/ {} \;
 
-          tlType = "run";
-        };
+              runHook postInstall
+            '';
 
-        ########################################################################
-        # LaTeX Environment
-        texliveEnv = pkgs.texlive.combine {
-          inherit
-            (pkgs.texlive)
-            adjustbox
-            alegreya
-            babel
-            bclogo
-            bookcover
-            catchfile
-            chngcntr
-            collectbox
-            collection-latexextra
-            collection-latexrecommended
-            collection-mathscience
-            comment
-            currfile
-            emptypage
-            enumitem
-            environ
-            fgruler
-            fontaxes
-            framed
-            fvextra
-            idxlayout
-            ifmtarg
-            ifnextok
-            ifplatform
-            imakeidx
-            import
-            inconsolata
-            l3packages
-            latexmk
-            lazylist
-            lettrine
-            libertine
-            libertinus-fonts
-            listings
-            mdframed
-            microtype
-            minifp
-            minted
-            mweights
-            needspace
-            newtx
-            noindentafter
-            nowidow
-            polytable
-            scheme-medium
-            subfigure
-            subfiles
-            textpos
-            tcolorbox
-            tikz-cd
-            titlecaps
-            titlesec
-            todonotes
-            trimspaces
-            upquote
-            wrapfig
-            xits
-            xifthen
-            xpatch
-            xstring
-            zref
-            ;
-
-          inconsolata-lgc-latex = {
-            pkgs = [inconsolata-lgc-latex];
+            tlType = "run";
           };
-          julia-mono-latex = {
-            pkgs = [julia-mono-latex];
+
+          ########################################################################
+          # LaTeX Environment
+          texliveEnv = pkgs.texlive.combine {
+            inherit
+              (pkgs.texlive)
+              adjustbox
+              alegreya
+              babel
+              bclogo
+              bookcover
+              catchfile
+              chngcntr
+              collectbox
+              collection-latexextra
+              collection-latexrecommended
+              collection-mathscience
+              comment
+              currfile
+              emptypage
+              enumitem
+              environ
+              fgruler
+              fontaxes
+              framed
+              fvextra
+              idxlayout
+              ifmtarg
+              ifnextok
+              ifplatform
+              imakeidx
+              import
+              inconsolata
+              l3packages
+              latexmk
+              lazylist
+              lettrine
+              libertine
+              libertinus-fonts
+              listings
+              mdframed
+              microtype
+              minifp
+              minted
+              mweights
+              needspace
+              newtx
+              noindentafter
+              nowidow
+              polytable
+              scheme-medium
+              subfigure
+              subfiles
+              textpos
+              tcolorbox
+              tikz-cd
+              titlecaps
+              titlesec
+              todonotes
+              trimspaces
+              upquote
+              wrapfig
+              xits
+              xifthen
+              xpatch
+              xstring
+              zref
+              ;
+
+            inconsolata-lgc-latex = {
+              pkgs = [ inconsolata-lgc-latex ];
+            };
+            julia-mono-latex = {
+              pkgs = [ julia-mono-latex ];
+            };
           };
-        };
 
-        commonAttrs = {
-          nativeBuildInputs = [
-            texliveEnv
-            (
-              pkgs.python3.withPackages (p: [p.pygments p.pygments-style-github])
-            )
-            pkgs.which
-          ];
-        };
+          commonAttrs = {
+            nativeBuildInputs = [
+              texliveEnv
+              (
+                pkgs.python3.withPackages (p: [ p.pygments p.pygments-style-github ])
+              )
+              pkgs.which
+            ];
+          };
 
-        mkLatex = variant: edition: let
-          maybeVariant = lib.optionalString (variant != null) "-${variant}";
-          maybeEdition = lib.optionalString (edition != null) "-${edition}";
-          variantStr =
-            if variant == null
-            then "reader"
-            else variant;
-          basename = "ctfp-${variantStr}${maybeEdition}";
-          version = self.shortRev or self.lastModifiedDate;
-          suffix = maybeVariant + maybeEdition;
-          fullname = "ctfp${suffix}";
-        in
-          pkgs.stdenvNoCC.mkDerivation (commonAttrs
-            // {
+          mkLatex = variant: edition:
+            let
+              maybeVariant = lib.optionalString (variant != null) "-${variant}";
+              maybeEdition = lib.optionalString (edition != null) "-${edition}";
+              variantStr =
+                if variant == null
+                then "reader"
+                else variant;
+              basename = "ctfp-${variantStr}${maybeEdition}";
+              version = self.shortRev or self.lastModifiedDate;
+              suffix = maybeVariant + maybeEdition;
+              fullname = "ctfp${suffix}";
+            in
+            pkgs.stdenvNoCC.mkDerivation (commonAttrs
+              // {
               inherit basename version;
               name = basename;
 
