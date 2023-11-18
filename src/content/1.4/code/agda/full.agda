@@ -29,3 +29,6 @@ upCase s = ( map toUpper s , "upCase " )
 
 toWords : String -> Writer (List String)
 toWords s = ( words s , "toWords " )
+
+process : String -> Writer (List String)
+process = upCase >=> toWords
