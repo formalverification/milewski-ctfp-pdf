@@ -1,5 +1,8 @@
-open import Data.String
-open import Data.Product
+open import Data.Char using (Char; toUpper)
+open import Data.String using (String; _++_; fromList; toList; words)
+open import Data.Product using (_×_; _,_)
+open import Data.List using (List) renaming (map to lmap)
+open import Function using (_∘_)
 
 variable a b : Set
 
@@ -15,5 +18,14 @@ m1 >=> m2 = λ x ->
       (z , s2) = m2 y
   in (z , s1 ++ s2)
 
+map : (Char → Char) → String → String
+map f = fromList ∘ lmap f ∘ toList
+
 return : ∀ {a : Set} → a → Writer a
 return x = (x , "")
+
+upCase : String -> Writer String
+upCase s = ( map toUpper s , "upCase " )
+
+toWords : String -> Writer (List String)
+toWords s = ( words s , "toWords " )
