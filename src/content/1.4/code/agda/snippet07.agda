@@ -1,2 +1,2 @@
-process : String -> Writer (List String)
+process : String → Writer (List String)
 process = upCase >=> toWords
