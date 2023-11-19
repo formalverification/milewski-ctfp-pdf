@@ -45,3 +45,6 @@ record Element : Set where
   field name : String
         symbol : String
         atomicNumber : ℤ
+
+tupleToElem : (String × String × ℤ) → Element
+tupleToElem (n , s , a) = element s s a
