@@ -97,29 +97,62 @@ data JustType (a : Set) : Set where
 module snippet29 where
   Maybe = ∀ (a : Set) → Either ⊤ a
 
-data List (a : Set) : Set where
-  Nil : List a
-  Cons : a → List a → List a
+module list where
 
-open import snippet26
+  data List (a : Set) : Set where
+    Nil : List a
+    Cons : a → List a → List a
 
-maybeTail : List a → Maybe (List a)
-maybeTail Nil = Nothing
-maybeTail (Cons _ t) = Just t
+  open import snippet26
 
-snippet32 : a × (Either b c)
-snippet32 = {!   !}
+  maybeTail : List a → Maybe (List a)
+  maybeTail Nil = Nothing
+  maybeTail (Cons _ t) = Just t
 
-snippet33 : Either (a × b) (a × c)
-snippet33 = {!   !}
+  snippet32 : a × (Either b c)
+  snippet32 = {!   !}
 
-prodToSum : (a × Either b c) → Either (a × b) (a × c)
-prodToSum (x , Left y)  = Left (x , y)
-prodToSum (x , Right z) = Right (x , z)
+  snippet33 : Either (a × b) (a × c)
+  snippet33 = {!   !}
 
-sumToProd : Either (a × b) (a × c) → (a × Either b c)
-sumToProd (Left (x , y))  = x , Left y
-sumToProd (Right (x , z)) = x , Right z
+  prodToSum : (a × Either b c) → Either (a × b) (a × c)
+  prodToSum (x , Left y)  = Left (x , y)
+  prodToSum (x , Right z) = Right (x , z)
+
+  sumToProd : Either (a × b) (a × c) → (a × Either b c)
+  sumToProd (Left (x , y))  = x , Left y
+  sumToProd (Right (x , z)) = x , Right z
 
 prod1 : (ℤ × Either String Float)
 prod1 = ℤ.pos 2 , Left "Hi!"
+
+module isPrefixOf where
+  open import Data.Bool
+  open import Data.List
+  open Element
+
+  -- replace with data type representation
+  -- https://github.com/agda/agda-stdlib/issues/517
+  isListPrefixOf : ∀ {A : Set} → List A → List A → Bool
+  isListPrefixOf [] ys             = true
+  isListPrefixOf (x ∷ xs) []       = false
+  isListPrefixOf (x ∷ xs) (y ∷ ys) = {! x ≡ y  !} ∧ (isListPrefixOf xs ys)
+
+  module ipo1 where
+    isPrefixOf : String → String → Bool
+    isPrefixOf s1 s2 = isListPrefixOf (toList s1) (toList s2)
+
+    module v1 where
+      startsWithSymbol : (String × String × ℤ) → Bool
+      startsWithSymbol (name , symbol , _) = isPrefixOf symbol name
+
+    module v2 where
+      startsWithSymbol : Element -> Bool
+      startsWithSymbol e = isPrefixOf (symbol e) (name e)
+
+  module v3 where
+    _isPrefixOf_ : String → String → Bool
+    s1 isPrefixOf s2 = isListPrefixOf (toList s1) (toList s2)
+
+    startsWithSymbol : Element → Bool
+    startsWithSymbol e = symbol e isPrefixOf name e
