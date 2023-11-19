@@ -105,3 +105,6 @@ open import snippet26
 maybeTail : List a -> Maybe (List a)
 maybeTail Nil = Nothing
 maybeTail (Cons _ t) = Just t
+
+snippet32 : a × (Either b c)
+snippet32 = {!   !}
