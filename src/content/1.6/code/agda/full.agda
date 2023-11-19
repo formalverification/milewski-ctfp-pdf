@@ -1,8 +1,9 @@
 open import Data.Empty using (⊥)
 open import Data.Unit using (⊤; tt)
 open import Data.String using (String; toList)
-open import Data.Integer using (ℤ)
+open import Data.Integer using (ℤ; pos)
 open import Data.Product using (_×_; _,_)
+open import Data.Float using (Float)
 open import Relation.Binary.PropositionalEquality
 
 variable a b c : Set
@@ -58,7 +59,7 @@ elemToTuple : Element → (String × String × ℤ)
 elemToTuple e = name e , (name e) , (atomicNumber e)
   where open Element
 
-atomicNumber : Element -> ℤ
+atomicNumber : Element → ℤ
 atomicNumber = Element.atomicNumber
 
 data Either (a b : Set) : Set where
@@ -102,12 +103,23 @@ data List (a : Set) : Set where
 
 open import snippet26
 
-maybeTail : List a -> Maybe (List a)
+maybeTail : List a → Maybe (List a)
 maybeTail Nil = Nothing
 maybeTail (Cons _ t) = Just t
 
 snippet32 : a × (Either b c)
 snippet32 = {!   !}
 
-snippet32 : Either (a × b) (a × c)
-snippet32 = {!   ! ×
+snippet33 : Either (a × b) (a × c)
+snippet33 = {!   !}
+
+prodToSum : (a × Either b c) → Either (a × b) (a × c)
+prodToSum (x , Left y)  = Left (x , y)
+prodToSum (x , Right z) = Right (x , z)
+
+sumToProd : Either (a × b) (a × c) → (a × Either b c)
+sumToProd (Left (x , y))  = x , Left y
+sumToProd (Right (x , z)) = x , Right z
+
+prod1 : (ℤ × Either String Float)
+prod1 = ℤ.pos 2 , Left "Hi!"
