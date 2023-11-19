@@ -83,12 +83,16 @@ module snippet25 where
   data Bool : Set where
     True False : Bool
 
-data Maybe (a : Set) : Set where
-  Nothing :     Maybe a
-  Just    : a → Maybe a
+module snippet26 where
+  data Maybe (a : Set) : Set where
+    Nothing :     Maybe a
+    Just    : a → Maybe a
 
 data NothingType : Set where
   Nothing : NothingType
 
 data JustType (a : Set) : Set where
   Just : a → JustType a
+
+module snippet29 where
+  Maybe = ∀ (a : Set) → Either ⊤ a
