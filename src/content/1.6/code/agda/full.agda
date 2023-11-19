@@ -1,6 +1,5 @@
 open import Data.Empty using (⊥)
 open import Data.Unit using (⊤; tt)
-open import Data.Bool using (Bool; false; true; _∧_)
 open import Data.String using (String; toList)
 open import Data.Integer using (ℤ)
 open import Data.Product using (_×_; _,_)
@@ -24,22 +23,28 @@ rho (a , tt) = a
 rho_inv : a → (a × ⊤)
 rho_inv x = x , tt
 
-module snippet9 where
-  data Pair (a b : Set) : Set where
-    P : a → b → Pair a b
+  module snippet9 where
+    open import Data.Bool using (Bool; false; true; _∧_)
 
-  stmt : Pair String Bool
-  stmt = P "This statement is" false
+    data Pair (a b : Set) : Set where
+      P : a → b → Pair a b
+
+    stmt : Pair String Bool
+    stmt = P "This statement is" false
 
 data Pair (a b : Set) : Set where
   pair : a → b → Pair a b
 
 module snippet12 where
+  open import Data.Bool using (Bool; false)
   stmt : String × Bool
   stmt = _,_ "This statement is" false
 
-data Stmt : Set where
-  stmt : String → Bool → Stmt
+module snippet13 where
+  open import Data.Bool using (Bool)
+
+  data Stmt : Set where
+    stmt : String → Bool → Stmt
 
 record Element : Set where
   constructor element
@@ -73,3 +78,7 @@ data Color : Set where
   Red   : Color
   Green : Color
   Blue  : Color
+
+module snippet25 where
+  data Bool : Set where
+    True False : Bool
