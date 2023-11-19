@@ -1,9 +1,9 @@
 open import Data.Unit using (⊤; tt)
 open import Data.Bool using (Bool; false; true; _∧_)
-open import Data.String using (String)
+open import Data.String using (String; toList)
 open import Data.Integer using (ℤ)
 open import Data.Product using (_×_; _,_)
-open import Data.List
+open import Data.List as List
 open import Relation.Binary.PropositionalEquality
 
 variable a b c : Set
@@ -39,3 +39,9 @@ module snippet12 where
 
 data Stmt : Set where
   stmt : String → Bool → Stmt
+
+record Element : Set where
+  constructor element
+  field name : String
+        symbol : String
+        atomicNumber : ℤ
