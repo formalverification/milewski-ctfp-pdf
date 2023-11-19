@@ -108,3 +108,6 @@ maybeTail (Cons _ t) = Just t
 
 snippet32 : a × (Either b c)
 snippet32 = {!   !}
+
+snippet32 : Either (a × b) (a × c)
+snippet32 = {!   ! ×
