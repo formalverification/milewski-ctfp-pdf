@@ -3,7 +3,6 @@ open import Data.Unit using (⊤; tt)
 open import Data.String using (String; toList)
 open import Data.Integer using (ℤ)
 open import Data.Product using (_×_; _,_)
-open import Data.List as List
 open import Relation.Binary.PropositionalEquality
 
 variable a b c : Set
@@ -96,3 +95,7 @@ data JustType (a : Set) : Set where
 
 module snippet29 where
   Maybe = ∀ (a : Set) → Either ⊤ a
+
+data List (a : Set) : Set where
+  Nil : List a
+  Cons : a → List a → List a
