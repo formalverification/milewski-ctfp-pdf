@@ -68,3 +68,8 @@ data OneOfThree (a b c : Set) : Set where
 
 snippet23 : Either a ⊥
 snippet23 = {!   !}
+
+data Color : Set where
+  Red   : Color
+  Green : Color
+  Blue  : Color
