@@ -89,3 +89,6 @@ data Maybe (a : Set) : Set where
 
 data NothingType : Set where
   Nothing : NothingType
+
+data JustType (a : Set) : Set where
+  Just : a → JustType a
