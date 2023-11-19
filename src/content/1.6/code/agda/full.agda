@@ -99,3 +99,9 @@ module snippet29 where
 data List (a : Set) : Set where
   Nil : List a
   Cons : a → List a → List a
+
+open import snippet26
+
+maybeTail : List a -> Maybe (List a)
+maybeTail Nil = Nothing
+maybeTail (Cons _ t) = Just t
