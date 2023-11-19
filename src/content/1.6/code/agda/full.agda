@@ -48,3 +48,7 @@ record Element : Set where
 
 tupleToElem : (String × String × ℤ) → Element
 tupleToElem (n , s , a) = element s s a
+
+elemToTuple : Element → (String × String × ℤ)
+elemToTuple e = name e , (name e) , (atomicNumber e)
+  where open Element
