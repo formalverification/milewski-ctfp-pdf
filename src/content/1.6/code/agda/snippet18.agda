@@ -1,1 +1,1 @@
-atomicNumber : Element -> ℤ
+atomicNumber : Element → ℤ
