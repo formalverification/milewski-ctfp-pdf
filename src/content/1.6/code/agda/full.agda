@@ -82,3 +82,7 @@ data Color : Set where
 module snippet25 where
   data Bool : Set where
     True False : Bool
+
+data Maybe (a : Set) : Set where
+  Nothing :     Maybe a
+  Just    : a → Maybe a
