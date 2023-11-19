@@ -59,3 +59,8 @@ atomicNumber = Element.atomicNumber
 data Either (a b : Set) : Set where
   Left  : a → Either a b
   Right : b → Either a b
+
+data OneOfThree (a b c : Set) : Set where
+  Sinistral : a → OneOfThree a b c
+  Medial    : b → OneOfThree a b c
+  Dextral   : c → OneOfThree a b c
