@@ -1,3 +1,4 @@
+open import Data.Empty using (⊥)
 open import Data.Unit using (⊤; tt)
 open import Data.Bool using (Bool; false; true; _∧_)
 open import Data.String using (String; toList)
@@ -64,3 +65,6 @@ data OneOfThree (a b c : Set) : Set where
   Sinistral : a → OneOfThree a b c
   Medial    : b → OneOfThree a b c
   Dextral   : c → OneOfThree a b c
+
+snippet23 : Either a ⊥
+snippet23 = {!   !}
