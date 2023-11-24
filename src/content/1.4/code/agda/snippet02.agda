@@ -1,1 +1,1 @@
-a -> Writer b
+a → Writer b

@@ -2,7 +2,7 @@ open import Data.Char using (Char; toUpper)
 open import Data.String using (String; _++_; fromList; toList; words)
 open import Data.Product using (_×_; _,_) renaming (proj₁ to fst; proj₂ to snd)
 open import Data.List using (List) renaming (map to lmap)
-open import Function using (_∘_)
+open import Function using (_∘_; _$_)
 
 private variable a b c : Set
 
@@ -10,7 +10,7 @@ Writer : Set → Set
 Writer a = a × String
 
 morphism : a → Writer b
-morphism = {!   !}
+morphism = {!!}
 
 _>=>_ : (a → Writer b) → (b → Writer c) → (a → Writer c)
 m1 >=> m2 = λ x →
@@ -19,13 +19,9 @@ m1 >=> m2 = λ x →
   in (z , s1 ++ s2)
 
 -- alternative --
-_fish_ : (a -> Writer b) -> (b -> Writer c) -> (a -> Writer c)
-_fish_ {c = c} m1 m2 x = (z , s)
-  where
-  z : c
-  z = fst (m2 $ fst (m1 x))
-  s : String
-  s = snd (m1 x) ++ snd (m2 $ fst (m1 x))
+_≫=≫_ : (a → Writer b) → (b → Writer c) → a → Writer c
+m1 ≫=≫ m2 = λ x →
+  fst (m2 $ fst (m1 x)) , snd (m1 x) ++ snd (m2 $ fst (m1 x))
 
 map : (Char → Char) → String → String
 map f = fromList ∘ lmap f ∘ toList

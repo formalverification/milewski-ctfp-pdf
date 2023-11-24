@@ -1,2 +1,2 @@
-Writer : Set -> Set
+Writer : Set → Set
 Writer a = a × String
