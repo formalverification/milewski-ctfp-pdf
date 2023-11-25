@@ -71,10 +71,8 @@ that will lead us to the construction of a product of two sets, `A` and `B`. Thi
 pattern consists of an object `C` and two morphisms `p` and `q` connecting it to
 `A` and `B`, respectively:
 -}
-p : C → A
-p = {!!}
-q : C → B
-q = {!!}
+𝑝 : {C A : Set} → C → A
+𝑞 : {C B : Set} → C → B
 {- All `C`s that fit this pattern will be considered candidates for the product.
 There may be lots of them. For instance, let's pick, as our constituents, two
 Haskell types, `Int` and `Bool`, and get a sampling of candidates for their product.
@@ -93,5 +91,40 @@ p₃ : Int × Int × Bool → Int
 p₃ (x , _ , _) = x
 q₂ : Int × Int × Bool → Bool
 q₂ (_ , _ , b) = b
-{- Another way of looking at these equations is that m factorizes p' and q'.
+{- But we want the "best" candidate `C`---i.e., the `C` such that for all other such
+candidates, say, `D`, there is a morphism `m : D → C` such that p' = p ∘ m  and
+q' = q ∘ m. See the figure below.
 -}
+
+--  A         B
+--  |\       /|
+--  |  p   q |
+--  |   \ /   |
+--  p'   C    q'
+--   \   |   /
+--    \  m  /
+--     \ | /
+--       D
+
+{- Another way of looking at these equations is that m factorizes p' and q'.
+
+To build some intuition, let's see that the pair `(Int , Bool)` with the two
+canonical projections, `fst` and `snd` is indeed better than the two candidates
+presented before. The mapping `m` for the first candidate is:
+-}
+𝑚 : {C C' : Set} → C' → C
+𝑚 = {!!}
+m : Int → Int × Bool
+m x = (x , true)
+{- Indeed, the two projections, p and q can be reconstructed as:
+-}
+𝑝 x = fst (𝑚 x)
+𝑞 x = snd (𝑚 x)
+{- The m for the second example is similarly uniquely determined:
+-}
+
+m' : C → A × B
+m' x = (𝑝 x , 𝑞 x)
+
+factorizer : (C → A) → (C → B) → C → A × B
+factorizer p q = λ x → (p x , q x)
