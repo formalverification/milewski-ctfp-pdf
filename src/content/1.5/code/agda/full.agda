@@ -7,7 +7,7 @@ open import Function using (_∘_; id)
 open import Relation.Binary.PropositionalEquality using (_≡_)
 
 private variable
-  A B C : Set
+  A B C C' : Set
   f : A → B
   g : B → A
 
@@ -112,7 +112,7 @@ To build some intuition, let's see that the pair `(Int , Bool)` with the two
 canonical projections, `fst` and `snd` is indeed better than the two candidates
 presented before. The mapping `m` for the first candidate is:
 -}
-𝑚 : {C C' : Set} → C' → C
+𝑚 : C' → C
 𝑚 = {!!}
 m : Int → Int × Bool
 m x = (x , true)
@@ -128,3 +128,25 @@ m' x = (𝑝 x , 𝑞 x)
 
 factorizer : (C → A) → (C → B) → C → A × B
 factorizer p q = λ x → (p x , q x)
+
+
+{- 5.6 COPRODUCT -}
+{- Like every construction in category theory, the product has a dual, which is
+called the coproduct. When we reverse the arrows in the product pattern, we end
+up with an object `c` equipped with two injections, `inl` and `inr`: morphisms
+from `A` and `B` to `C`. In Agda, these are often denoted by `inj₁` and `inj₂`.
+-}
+inj₁ : A → C
+inj₁ = {!!}
+inj₂ : B → C
+inj₂ = {!!}
+{- Again, we want the "best" candidate `C`, but the ranking is inverted: object
+`C` is "better" than object `C'` equipped with the injections `i₁` and `i₂` if
+there is a morphism `m` from `C` to `C'` that factorizes the injections:
+-}
+-- 𝒎 : A ⊎ B → C
+-- 𝒎 = ?
+-- i' : A → C
+-- i' = 𝒎 ∘ inj₁
+-- j' : B → C
+-- j' = 𝒎 ∘ inj₂
