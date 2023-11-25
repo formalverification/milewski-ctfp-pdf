@@ -1,7 +1,9 @@
+open import Agda.Builtin.Nat
+open import Agda.Builtin.Int
 open import Data.Bool using (Bool; true; false)
 open import Data.Empty using (⊥; ⊥-elim)
-open import Agda.Builtin.Int
 open import Data.Product using (_×_; _,_)
+open import Data.String using (String)
 open import Data.Unit using (⊤; tt)
 open import Function using (_∘_; id)
 open import Relation.Binary.PropositionalEquality using (_≡_)
@@ -150,3 +152,29 @@ there is a morphism `m` from `C` to `C'` that factorizes the injections:
 -- i' = 𝒎 ∘ inj₁
 -- j' : B → C
 -- j' = 𝒎 ∘ inj₂
+data Contact : Set where
+  PhoneNum : Nat → Contact
+  EmailAddr : String → Contact
+
+helpdesk : Contact
+helpdesk = PhoneNum 2222222
+
+
+data Either (A B : Set) : Set where
+  Left : A → Either A B
+  Right : B → Either A B
+
+factorizer' : (A → C) → (B → C) → Either A B → C
+factorizer' i j (Left a) = i a
+factorizer' i j (Right b) = j b
+
+-- p = fst ∘ m
+-- q = snd ∘ m
+
+
+p : ⊤ → A
+q : ⊤ → B
+mm : ⊤ → A × B
+mm tt = ?
+p tt = fst (mm tt)
+q tt = snd (mm tt)
