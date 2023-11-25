@@ -33,10 +33,18 @@ record Representable (f : Set → Set) : Set₁ where
     tabulate  : (Repf → x) → f x
     index     : f x → Repf → x
 
-record RawAdjunction (f : Set → Set) (u : Set → Set)
-    ⦃ _ : Functor u ⦄
-    ⦃ _ : Representable u ⦄ : Set₁ where
-  field
-    {- snippet 04 -}
-    unit : a → u (f a)
-    counit : f (u a) → a
+module snippet4 where
+  record RawAdjunction (f : Set → Set) (u : Set → Set)
+      ⦃ _ : Functor u ⦄
+      ⦃ _ : Representable u ⦄ : Set₁ where
+    field
+      unit : a → u (f a)
+      counit : f (u a) → a
+
+module snippet5 where
+  record RawAdjunction (f : Set → Set) (u : Set → Set)
+      ⦃ _ : Functor u ⦄
+      ⦃ _ : Representable u ⦄ : Set₁ where
+    field
+      leftAdjunct : (f a → b) → (a → u b)
+      rightAdjunct : (a → u b) → (f a → b)

@@ -2,5 +2,5 @@ record RawAdjunction (f : Set → Set) (u : Set → Set)
     ⦃ _ : Functor u ⦄
     ⦃ _ : Representable u ⦄ : Set₁ where
   field
-    unit : a → u (f a)
-    counit : f (u a) → a
+    leftAdjunct : (f a → b) → (a → u b)
+    rightAdjunct : (a → u b) → (f a → b)
