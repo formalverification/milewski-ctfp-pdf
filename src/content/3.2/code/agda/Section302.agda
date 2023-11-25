@@ -13,3 +13,11 @@ record RawMonad (m : Set → Set) : Set₁ where
     {- snippet 02  -}
     return : d → m d
     _>>=_  : m a → (a → m b) → m b
+
+{- Haskell https://hackage.haskell.org/package/comonad-5.0.8/docs/Control-Comonad.html -}
+record RawComnad (w : Set → Set) : Set₁ where
+  field
+    {- snippet 03  -}
+    extract : w c → a
+    duplicate : w a → w (w b)
+    extend : (w a → b) → w a → w b
