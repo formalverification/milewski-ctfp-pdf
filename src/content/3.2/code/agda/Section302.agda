@@ -1,7 +1,7 @@
 open import Data.Product using (_×_; _,_)
 open import Relation.Binary.PropositionalEquality using (_≡_)
 
-variable A B a b d : Set
+variable A B a b c d x : Set
 
 {- snippet 01 - defined in Data.Product.Base -}
 swap : A × B → B × A
@@ -18,6 +18,25 @@ record RawMonad (m : Set → Set) : Set₁ where
 record RawComnad (w : Set → Set) : Set₁ where
   field
     {- snippet 03  -}
-    extract : w c → a
+    extract : w c → c
     duplicate : w a → w (w b)
     extend : (w a → b) → w a → w b
+
+{- from section about Functors 7 -}
+record Functor (f : Set → Set) : Set₁ where
+  field fmap : (a → b) → f a → f b
+
+{- from section about Representable functors 2.4 -}
+record Representable (f : Set → Set) : Set₁ where
+  field
+    Repf      : Set
+    tabulate  : (Repf → x) → f x
+    index     : f x → Repf → x
+
+record RawAdjunction (f : Set → Set) (u : Set → Set)
+    ⦃ _ : Functor u ⦄
+    ⦃ _ : Representable u ⦄ : Set₁ where
+  field
+    {- snippet 04 -}
+    unit : a → u (f a)
+    counit : f (u a) → a
