@@ -85,3 +85,13 @@ p₁ : Int → Int
 p₁ x = x
 p₂ : Int → Bool
 p₂ _ = true
+{- Here's another one: (Int, Int, Bool). It's a tuple of three ele-
+ments, or a triple. Here are two morphisms that make it a legitimate
+candidate (we are using pattern matching on triples):
+-}
+p₃ : Int × Int × Bool → Int
+p₃ (x , _ , _) = x
+q₂ : Int × Int × Bool → Bool
+q₂ (_ , _ , b) = b
+{- Another way of looking at these equations is that m factorizes p' and q'.
+-}

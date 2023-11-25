@@ -1,5 +1,2 @@
-p : Int → Int
-p x = x
-
-q : Int → Bool
-q _ = true
+p : c → a
+q : c → b
