@@ -660,10 +660,13 @@ through the outer \code{Maybe}. But we can't just send \code{f}
 inside \code{Maybe} because \code{f} doesn't work on lists. We have
 to send \code{(fmap f)} to operate on the inner list. For instance,
 let's see how we can square the elements of a \code{Maybe} list of
-integers:\footnote{Note that we have to add a new Functor instance
+integers:\footnote{Note that we must add a new Functor instance
 for the built-in \code{List} type since our previous list functor
 instance implemented for our own \code{List} type (with constructors
-\code{Nil} and \code{Cons}).}
+\code{Nil} and \code{Cons}):
+
+\srcsnippet{agda}{black}{agda}{\currfileabsdir/code/agda/snippet30aux.agda}
+}
 
 \src{snippet30}
 The compiler, after analyzing the types, will figure out that, for the
