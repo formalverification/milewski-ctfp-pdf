@@ -1,2 +1,2 @@
-fmap f Nil = Nil
-fmap f (Cons x as) = Cons (f x) (list-fmap f as)
+fmap _ Nil = Nil
+fmap f (Cons x as) = Cons (f x) (fmap f as)

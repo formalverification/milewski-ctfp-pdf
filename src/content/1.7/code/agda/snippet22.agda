@@ -1,2 +1,3 @@
-instance _ : Functor λ A → (R → A)
-         _ = record { Fmap = λ f g → f ∘ g }
+instance
+  fromR : Functor λ A → (R → A)
+  fromR .fmap = λ f g → f ∘ g

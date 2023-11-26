@@ -1,1 +1,1 @@
-fmap = _∘_
+fromR .fmap = _∘_
