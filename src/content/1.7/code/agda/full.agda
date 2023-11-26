@@ -5,7 +5,7 @@ open import Function using (_∘_)
 open import Relation.Nullary.Decidable
 open import Relation.Binary.PropositionalEquality using (_≡_; refl)
 
-private variable A B C : Set
+private variable A B C R : Set
 
 {- 7.1 Functors in Programming -}
 
@@ -68,6 +68,26 @@ instance  _ : Functor Maybe
                       }
 
 
-  -- map f = \case
-  --       Nothing -> Nothing
-  --       Just a -> Just (f a)
+{- 7.1.6 The List Functor -}
+
+data List (A : Set) : Set where
+  Nil  : List A
+  Cons : A → List A → List A
+
+instance _ : Functor List
+         _ = record { Fmap = list-fmap }
+               where
+               list-fmap : (A → B) → List A → List B
+               list-fmap f Nil = Nil
+               list-fmap f (Cons x as) = Cons (f x) (list-fmap f as)
+
+instance _ : Functor λ A → (R → A)
+         _ = record { Fmap = λ f g → f ∘ g }
+
+
+{- 7.2 Functions as Containers -}
+
+
+{- 7.3 Functor Composition -}
+
+{- 7.4 Challenges -}
