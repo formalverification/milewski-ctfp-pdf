@@ -64,3 +64,7 @@ instance
     fmap : {A B : Set} → (A → B) → Identity A → Identity B
     fmap A→B (mkId a) = mkId (A→B a)
 
+data Maybe (A : Set) : Set where
+  Nothing : Maybe A
+  Just : A → Maybe A
+
