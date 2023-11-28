@@ -54,3 +54,13 @@ instance
 data Identity (A : Set) : Set where
     mkId : A → Identity A
 
+record Functor (F : Set → Set) : Set₁ where
+  constructor mkFunctor
+  field fmap : (A → B) → F A → F B
+
+instance
+  _ : Functor Identity
+  _ = record { fmap = fmap } where
+    fmap : {A B : Set} → (A → B) → Identity A → Identity B
+    fmap A→B (mkId a) = mkId (A→B a)
+
