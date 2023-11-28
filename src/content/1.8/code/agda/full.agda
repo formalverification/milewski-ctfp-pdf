@@ -48,3 +48,9 @@ instance
     second : {A B D : Set} → (B → D) → A ⊎ B → A ⊎ D
     second B→D (inj₁ a) = inj₁ a
     second B→D (inj₂ b) = inj₂ (B→D b)
+
+{- 8.3 Functorial Algebraic Data Types -}
+
+data Identity (A : Set) : Set where
+    mkId : A → Identity A
+
