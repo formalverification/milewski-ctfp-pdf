@@ -663,16 +663,8 @@ let's see how we can square the elements of a \code{Maybe} list of
 integers:\footnote{Note that we must add a new Functor instance
 for the built-in \code{List} type since our previous list functor
 instance implemented our own \code{List} type (with constructors
-\code{Nil} and \code{Cons}):
-\begin{verbatim}
-open import Agda.Builtin.Int
-open import Data.Integer
-instance
-  ListFunc : Functor List
-  ListFunc .fmap _ [] = []
-  ListFunc .fmap f (x ∷ as) = (f x) ∷ (fmap f as)
-\end{verbatim}
-}
+\code{Nil} and \code{Cons}). (For details see the \code{full.agda}
+file for this section.)}
 
 \src{snippet30}
 The compiler, after analyzing the types, will figure out that, for the
