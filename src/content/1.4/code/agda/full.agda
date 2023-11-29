@@ -18,11 +18,6 @@ m1 >=> m2 = λ x →
       (z , s2) = m2 y
   in (z , s1 ++ s2)
 
--- alternative --
-_≫=≫_ : (a → Writer b) → (b → Writer c) → a → Writer c
-m1 ≫=≫ m2 = λ x →
-  fst (m2 $ fst (m1 x)) , snd (m1 x) ++ snd (m2 $ fst (m1 x))
-
 map : (Char → Char) → String → String
 map f = fromList ∘ lmap f ∘ toList
 
