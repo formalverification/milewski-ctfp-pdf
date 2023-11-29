@@ -52,7 +52,7 @@ instance
 {- 8.3 Functorial Algebraic Data Types -}
 
 data Identity (A : Set) : Set where
-    mkId : A → Identity A
+  mkId : A → Identity A
 
 record Functor (F : Set → Set) : Set₁ where
   constructor mkFunctor
@@ -64,7 +64,8 @@ instance
     fmap : {A B : Set} → (A → B) → Identity A → Identity B
     fmap A→B (mkId a) = mkId (A→B a)
 
-data Maybe (A : Set) : Set where
-  Nothing : Maybe A
-  Just : A → Maybe A
+module snippet07 where
+  data Maybe (A : Set) : Set where
+    Nothing : Maybe A
+    Just : A → Maybe A
 
