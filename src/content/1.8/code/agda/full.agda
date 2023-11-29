@@ -1,5 +1,6 @@
 open import Data.Product using (_×_; _,_; proj₁; proj₂)
 open import Data.Sum using (_⊎_; [_,_]; inj₁; inj₂)
+open import Agda.Builtin.Unit
 
 private variable A B C D : Set
 
@@ -68,4 +69,11 @@ module snippet07 where
   data Maybe (A : Set) : Set where
     Nothing : Maybe A
     Just : A → Maybe A
+
+data Const (C A : Set) : Set where
+  mkConst : C → Const C A
+
+module snippet08 where
+  Maybe : Set → Set
+  Maybe A = Const ⊤ A ⊎ Identity A
 
