@@ -662,10 +662,16 @@ to send \code{(fmap f)} to operate on the inner list. For instance,
 let's see how we can square the elements of a \code{Maybe} list of
 integers:\footnote{Note that we must add a new Functor instance
 for the built-in \code{List} type since our previous list functor
-instance implemented for our own \code{List} type (with constructors
+instance implemented our own \code{List} type (with constructors
 \code{Nil} and \code{Cons}):
-
-\srcsnippet{agda}{black}{agda}{\currfileabsdir/code/agda/supplement30.agda}
+\begin{verbatim}
+open import Agda.Builtin.Int
+open import Data.Integer
+instance
+  ListFunc : Functor List
+  ListFunc .fmap _ [] = []
+  ListFunc .fmap f (x ∷ as) = (f x) ∷ (fmap f as)
+\end{verbatim}
 }
 
 \src{snippet30}
