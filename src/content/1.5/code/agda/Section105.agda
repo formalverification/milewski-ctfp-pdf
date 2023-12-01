@@ -1,13 +1,14 @@
+module Section105 where
+
 open import Agda.Builtin.Nat using (Nat)
 open import Agda.Builtin.Int using (Int)
-open import Level using (Level; _⊔_)
 open import Data.Bool using (Bool; true; false)
 open import Data.Empty using (⊥)
-open import Data.Product using (∃; ∃-syntax)
 open import Data.String using (String)
 open import Data.Unit using (⊤; tt)
 open import Function using (_∘_; id)
-open import Relation.Binary.PropositionalEquality  using (_≡_; refl)
+open import Level using (Level; _⊔_)
+open import Relation.Binary.PropositionalEquality using (_≡_; refl)
 
 private variable
   a b : Level
