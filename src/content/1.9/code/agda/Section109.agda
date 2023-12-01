@@ -1,4 +1,4 @@
-module full where
+module Section109 where
 
 open import Data.Nat.Base as ℕ using ()
 open import Data.String using (String; _++_)
@@ -8,7 +8,6 @@ open import Data.Integer using (ℤ; 0ℤ)
 open import Data.Float using (Float) renaming (_<ᵇ_ to _<ᶠᵇ_)
 open import Function using (_∘_; _∘₂_; id)
 open import Relation.Binary.PropositionalEquality using (_≡_; refl)
-
 
 private variable A B C D E : Set
 
