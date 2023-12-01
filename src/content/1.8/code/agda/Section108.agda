@@ -1,6 +1,10 @@
+module Section108 where
+
 open import Function using (id; _∘_)
 open import Data.Product using (_×_; _,_)
 open import Data.Unit.Base using (⊤)
+open import Relation.Binary.PropositionalEquality using (_≡_)
+
 private variable
   A B C D : Set
 
@@ -15,6 +19,9 @@ record Bifunctor (F : Set → Set → Set) : Set₁ where
 
   second : (B → D) → F A B → F A D
   second = bimap id
+
+  bimap-law : (A → C) → (B → D) → Set
+  bimap-law g h =  (first g) ∘ (second h) ≡ bimap g h
 
 
 open Bifunctor
@@ -91,13 +98,26 @@ private variable
   F G : Set → Set
 
 {-                                                                   [snippet09] -}
-record BiComp (bf : Bifunctor BF)(fu : Functor F)(gu : Functor G)(A B : Set) : Set where
+record BiComp (bf : Bifunctor BF)(fu : Functor F)(gu : Functor G) : Set where
   constructor bicomp
 
+BiComp' :  Bifunctor BF
+  →        (Fu : (F : Set → Set → Set) → (A : Set) → Functor (F A))
+  →        (Gu : (G : Set → Set → Set) → (B : Set) → Functor (G B))
+  →        (F G : Set → Set → Set)
+  →        (A B : Set) → Set
+BiComp' BF Fu Gu F G A B = BiComp BF (Fu F A) (Gu G B)
+
+{- The bimap function for the composition of a bifunctor with two functors is -}
+--    bimap : (A → C) → (B → D) → F A B → F C D
 
 {-                                                                   [snippet10] -}
 instance
-  biFuncFuncFunc :  {bf : Bifunctor BF}{fu : Functor F}{gu : Functor G}
-    →               Bifunctor (BiComp bf fu gu)
+  biFuncFuncFunc :  {bf : Bifunctor BF}
+                    {Fu : (F : Set → Set → Set) → (A : Set) → Functor (F A)}
+                    {Gu : (G : Set → Set → Set) → (B : Set) → Functor (G B)}
+    →               Bifunctor (BiComp' bf Fu Gu BF BF)
 
-  biFuncFuncFunc = record { bimap = λ _ _ → λ where bicomp → bicomp }
+  bimap biFuncFuncFunc x x₁ x₂ = record {}
+
+-- .bimap = λ _ _ → λ where bicomp → bicomp
