@@ -1,5 +1,7 @@
 {-# OPTIONS --guardedness --sized-types #-}
 
+module Section107 where
+
 open import Data.Bool using (Bool; _∧_)
 open import Data.Product.Base as P using (Σ; _×_; _,_; <_,_>; proj₁; proj₂)
 open import Data.Nat using (ℕ; suc; zero)
