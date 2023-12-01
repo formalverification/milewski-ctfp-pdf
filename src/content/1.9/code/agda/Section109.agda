@@ -1,13 +1,15 @@
 module Section109 where
 
-open import Data.Nat.Base as ℕ using ()
-open import Data.String using (String; _++_)
-open import Data.Product using (_×_; _,_; Σ-syntax) renaming (dmap′ to _⟨∘⟩_)
 open import Data.Bool using (Bool; true; false; if_then_else_)
-open import Data.Integer using (ℤ; 0ℤ)
+open import Data.Empty using (⊥)
 open import Data.Float using (Float) renaming (_<ᵇ_ to _<ᶠᵇ_)
+open import Data.Integer using (ℤ; 0ℤ)
+open import Data.Nat.Base as ℕ using ()
+open import Data.Product using (_×_; _,_; Σ-syntax) renaming (dmap′ to _⟨∘⟩_)
+open import Data.String using (String; _++_)
 open import Function using (_∘_; _∘₂_; id)
 open import Relation.Binary.PropositionalEquality using (_≡_; refl)
+
 
 private variable A B C D E : Set
 
@@ -138,6 +140,7 @@ factorizer g = λ a → (λ b → g (a , b))
 
 
 {- Existence of morphism h in universal property of function type ----------------}
+{-                                                                   [snippet13] -}
 eval : ((A → B) × A) → B
 eval (f , a) = f a
 
@@ -193,7 +196,14 @@ _<ᵇ_ : ℤ → ℤ → Bool
 
 {-                                                                   [snippet10] -}
 f : Either ℤ Float → String
+
+{-                                                                   [snippet11] -}
 f (Left n) = if (n <ᵇ 0ℤ) then "Negative Int" else "Nonnegative Int"
 f (Right n) = if (n <ᶠᵇ 0.0) then "Negative Float" else "Nonnegative Float"
 
 {- 9.6 Curry-Howard Isomorphism --------------------------------------------------}
+{- _ : Either A B → A                                                [snippet14] -}
+
+{- absurd : ⊥ → A                                                   [snippet15] -}
+absurd : ⊥ → A
+absurd ()
