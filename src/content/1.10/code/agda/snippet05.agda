@@ -1,1 +1,1 @@
-nc : ∀ l → (fmapᵐ f ∘ safeHead) l  ≡  (safeHead ∘ fmapˡ f) l
+∀(l : List A) → (fmap f ∘ safeHead) l ≡ (safeHead ∘ fmap f) l
