@@ -1,1 +1,1 @@
-Either (a × b) (a × c)
+Either (A × B) (A × C)

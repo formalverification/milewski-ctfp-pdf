@@ -1,3 +1,3 @@
-prodToSum : (a × Either b c) → Either (a × b) (a × c)
+prodToSum : A × Either B C → Either (A × B) (A × C)
 prodToSum (x , Left y)  = Left (x , y)
 prodToSum (x , Right z) = Right (x , z)

@@ -1,1 +1,1 @@
-a × (Either b c)
+A × Either B C

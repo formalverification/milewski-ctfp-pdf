@@ -1,2 +1,2 @@
-data Pair (a b : Set) : Set where
-  P : a → b → Pair a b
+data Pair (A B : Set) : Set where
+  P : A → B → Pair A B

@@ -1,1 +1,2 @@
-Maybe = ∀ (a : Set) → Either ⊤ a
+Maybe : Set₁
+Maybe = ∀ (A : Set) → Either ⊤ A

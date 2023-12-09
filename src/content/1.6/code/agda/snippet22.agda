@@ -1,4 +1,4 @@
-data OneOfThree (a b c : Set) : Set where
-  Sinistral : a → OneOfThree a b c
-  Medial    : b → OneOfThree a b c
-  Dextral   : c → OneOfThree a b c
+data OneOfThree (A B C : Set) : Set where
+  Sinistral : A → OneOfThree A B C
+  Medial    : B → OneOfThree A B C
+  Dextral   : C → OneOfThree A B C

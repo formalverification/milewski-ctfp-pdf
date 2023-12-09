@@ -1,3 +1,3 @@
-data List (a : Set) : Set where
-  Nil : List a
-  Cons : a → List a → List a
+data List (A : Set) : Set where
+  Nil   : List A
+  Cons  : A → List A → List A
