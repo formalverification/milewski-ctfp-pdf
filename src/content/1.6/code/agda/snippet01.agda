@@ -1,2 +1,2 @@
-swap : (a × b) → (b × a)
+swap : A × B → B × A
 swap (x , y) = y , x
