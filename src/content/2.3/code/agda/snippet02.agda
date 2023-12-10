@@ -3,6 +3,6 @@ instance
   listMonoid = record
                 { mempty = []
                 ; mappend = _++_
-                ; leftId = λ _ → refl
-                ; rightId = ++-identityʳ
+                ; idˡ = λ _ → refl
+                ; idʳ = ++-identityʳ
                 ; assoc = ++-assoc }
