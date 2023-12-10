@@ -1,3 +1,3 @@
 instance
-  fromR : Functor λ A → (R → A)
-  fromR .fmap = λ f g → f ∘ g
+  fromR : Functor (λ (a : Set) → r → a)
+  fromR .fmap f g = f ∘ g

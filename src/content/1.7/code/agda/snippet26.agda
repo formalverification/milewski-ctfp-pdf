@@ -1,2 +1,2 @@
-data Const (C A : Set) : Set where
-  mkConst : C → Const C A
+data Const (c a : Set) : Set where
+  mkConst : c → Const c a

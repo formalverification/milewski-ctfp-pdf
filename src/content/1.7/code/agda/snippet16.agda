@@ -1,1 +1,1 @@
-fmap : (A → B) → List A → List B
+fmap : (a → b) → List a → List b

@@ -1,1 +1,1 @@
-fmap : (A → B) → (R → A) → (R → B)
+fmap : (a → b) → (r → a) → (r → b)

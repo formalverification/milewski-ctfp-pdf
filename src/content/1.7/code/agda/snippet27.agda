@@ -1,1 +1,1 @@
-fmap : (A → B) → Const C A → Const C B
+fmap : (a → b) → Const c a → Const c b
