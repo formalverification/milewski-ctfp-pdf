@@ -1,1 +1,1 @@
-Either A B → A
+Either a b → a

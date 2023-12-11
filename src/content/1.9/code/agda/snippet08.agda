@@ -1,2 +1,2 @@
-uncurry : (A → B → C) → A × B → C
-uncurry f (a , b) = f a b
+uncurry : (a → b → c) → a × b → c
+uncurry f (x , y) = f x y

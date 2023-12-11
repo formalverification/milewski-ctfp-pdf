@@ -11,7 +11,7 @@ open import Function using (_∘_; _∘₂_; id)
 open import Relation.Binary.PropositionalEquality using (_≡_; refl)
 
 
-private variable A B C D E : Set
+private variable a b c d e : Set
 
 {- 9 Function Types  -------------------------------------------------------------}
 
@@ -21,32 +21,32 @@ private variable A B C D E : Set
    We will need a pattern that involves three objects: the function type that we
    are constructing, the domain type, and the codomain type.  The obvious pattern
    that connects these three types is called *function application* or
-   *evaluation*. Given a candidate for a function type, let's call it Z (an
-   object) and the domain type A (an object), the application maps this pair (Z,
-   A) to the codomain type object B.  Thus, we have three objects, Z, A, and B;
-   the latter two are fixed, but Z is merely a *candidate* for the function type
+   *evaluation*. Given a candidate for a function type, let's call it z (an
+   object) and the domain type a (an object), the application maps this pair (z,
+   a) to the codomain type object b.  Thus, we have three objects, z, a, and b;
+   the latter two are fixed, but z is merely a *candidate* for the function type
    we are trying to construct.
 
    We also have the application, a mapping. How do we incorporate this mapping
    into our pattern?  If we were allowed to look inside objects, we could pair a
-   function f (an element of the proposed function type Z) with an argument x (an
-   element of A) and map it to f x (the application of f to x, which inhabits B).
+   function f (an element of the proposed function type z) with an argument x (an
+   element of a) and map it to f x (the application of f to x, which inhabits b).
 
    But instead of dealing with individual pairs (f, x), we can talk about the
-   whole *product* of the function type Z and argument type A. The product Z × A
+   whole *product* of the function type z and argument type a. The product z × a
    is an object, and we can pick as our application morphism an arrow g from that
-   object to B. In Set, g would be the function that maps every pair (f, x) to f x.
+   object to b. In Set, g would be the function that maps every pair (f, x) to f x.
 
            _______
      ---  |       |               ___
-    | Z | | Z × A |  ---- g ---> | B |
+    | z | | z × a |  ---- g ---> | b |
      ---  |       |               ---
            -------
              ---
-            | A |
+            | a |
              ---
 
-   The pattern: A product of two objects Z, A, connected to another object B by a
+   The pattern: a product of two objects z, a, connected to another object b by a
    morphism g.
 
    Is this pattern specific enough to single out the function type using a
@@ -58,45 +58,45 @@ private variable A B C D E : Set
 
                  NO PRODUCT TYPE  ⇒  NO FUNCTION TYPE.
 
-   Let's review the universal construction... we decree that Z together with the
-   morphism g from Z × A to B is *better* than some other Z' with its own
-   application g', if and only if there is a unique mapping h from Z' to Z such
+   Let's review the universal construction... we decree that z together with the
+   morphism g from z × a to b is *better* than some other z' with its own
+   application g', if and only if there is a unique mapping h from z' to z such
    that the application of g' factors through the application of g.
 
    The third part of the universal construction is selecting the object that is
-   universally the best. Let's call this object A → B.  This object comes with its
-   own application---a morphism from A ⇒ B × A to B--- which we will call eval.
-   The object A ⇒ B is the best if any other candidate for a function object Z'
-   can be uniquely mapped to A ⇒ B in such a way that Z's application morphism g
-   factorizes through eval. The object A ⇒ B with eval is better than any other
-   object Z' and morphism g.
+   universally the best. Let's call this object a → b.  This object comes with its
+   own application---a morphism from a ⇒ b × a to b--- which we will call eval.
+   The object a ⇒ b is the best if any other candidate for a function object z'
+   can be uniquely mapped to a ⇒ b in such a way that z's application morphism g
+   factorizes through eval. The object a ⇒ b with eval is better than any other
+   object z' and morphism g.
 
 
 
                 _______
      ---       |       |
-    | Z |      | Z × A |__
+    | z |      | z × a |__
      ---       |       |  -- g __
       |         -------          \
       |            |              ↘ ---
-      h          h × id            | B |
+      h          h × id            | b |
       |            |              ↗ ---
       |      _____ ↓ _____       /
    -- ↓ --  |             |  eval
-  | A ⇒ B | | (A ⇒ B) × A |_/
+  | a ⇒ b | | (a ⇒ b) × a |_/
    -------  |             |
              -------------
                   ---
-                 | A |
+                 | a |
                   ---
 
-   A *function object* from A to B is an object A ⇒ B together with the morphism
+   A *function object* from a to b is an object a ⇒ b together with the morphism
 
-                  eval : ((A ⇒ B) × A) → B
+                  eval : ((a ⇒ b) × a) → b
 
-    such that for any other object Z with a morphism g : Z × A → B,
+    such that for any other object z with a morphism g : z × a → b,
 
-                  ∃! h : Z → (A ⇒ B)
+                  ∃! h : z → (a ⇒ b)
 
     that factors g through eval:
 
@@ -108,9 +108,9 @@ private variable A B C D E : Set
 
 
 {- 9.2 Currying ------------------------------------------------------------------}
-{- A → (B → C)                                                       [snippet01] -}
+{- a → (b → c)                                                       [snippet01] -}
 
-{- A → B → C                                                         [snippet02] -}
+{- a → b → c                                                         [snippet02] -}
 
 {-                                                                   [snippet03] -}
 catstr : String → String → String
@@ -124,30 +124,30 @@ catstr' s = λ s' → s ++ s'
 greet : String → String
 greet = catstr "Hello "
 
-{- A × B → C                                                         [snippet06] -}
+{- a × b → c                                                         [snippet06] -}
 
 {-                                                                   [snippet07] -}
-curry : (A × B → C) → A → B → C
+curry : (a × b → c) → a → b → c
 curry f a b = f (a , b)
 
 {-                                                                   [snippet08] -}
-uncurry : (A → B → C) → A × B → C
+uncurry : (a → b → c) → a × b → c
 uncurry f (a , b) = f a b
 
 {-                                                                   [snippet09] -}
-factorizer : (A × B → C) → A → (B → C)
+factorizer : (a × b → c) → a → (b → c)
 factorizer g = λ a → (λ b → g (a , b))
 
 
 {- Existence of morphism h in universal property of function type ----------------}
 {-                                                                   [snippet13] -}
-eval : ((A → B) × A) → B
+eval : ((a → b) × a) → b
 eval (f , a) = f a
 
-→-univ-prop-existence' :  ∀ (Z : Set)(g : Z × A → B)
-  →                      Σ[ h ∈ (Z → (A → B)) ]  g ≡ eval ∘ h ⟨∘⟩ id
+→-univ-prop-existence' :  ∀ (z : Set)(g : z × a → b)
+  →                      Σ[ h ∈ (z → (a → b)) ]  g ≡ eval ∘ h ⟨∘⟩ id
 
-→-univ-prop-existence' Z g = factorizer g , refl
+→-univ-prop-existence' z g = factorizer g , refl
 {---------------------------------------------------------------------------------}
 
 
@@ -166,20 +166,20 @@ computer science is that they provide models for the simply typed lambda calculu
 which forms the basis of all typed programming languages.
 
 The terminal object and the product have their duals: the initial object and the
-coproduct. A Cartesian closed category that also supports those two, and in which
+coproduct.  A Cartesian closed category that also supports those two, and in which
 product can be distributed over coproduct
 
-  A × (B + C) = (A × B) + (A × C)
-  (B + C) × A = (B × A) + (C × A)
+  a × (b + c) = (a × b) + (a × c)
+  (b + c) × a = (b × a) + (c × a)
 
-is called a "bicartesian closed category." We'll see in the next section that
+is called a "bicartesian closed category."  We'll see in the next section that
 bicartesian closed categories have some interesting properties.
                                                                                  -}
 
 {- 9.5 Exponentials and Algebraic Data Types -------------------------------------}
-data Either (A B : Set) : Set where
-  Left  : A → Either A B
-  Right : B → Either A B
+data Either (a b : Set) : Set where
+  Left  : a → Either a b
+  Right : b → Either a b
 
 -- Define a boolean version of less than for ℤ, as is done in the standard
 -- library for weak inequality, _≤ᵇ_.
@@ -202,8 +202,8 @@ f (Left n) = if (n <ᵇ 0ℤ) then "Negative Int" else "Nonnegative Int"
 f (Right n) = if (n <ᶠᵇ 0.0) then "Negative Float" else "Nonnegative Float"
 
 {- 9.6 Curry-Howard Isomorphism --------------------------------------------------}
-{- _ : Either A B → A                                                [snippet14] -}
+{- _ : Either a b → a                                                [snippet14] -}
 
-{- absurd : ⊥ → A                                                   [snippet15] -}
-absurd : ⊥ → A
+{- absurd : ⊥ → a                                                   [snippet15] -}
+absurd : ⊥ → a
 absurd ()

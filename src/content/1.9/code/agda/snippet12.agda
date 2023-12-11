@@ -1,1 +1,1 @@
-eval : ((A → B) × A) → B
+eval : ((a → b) × a) → b

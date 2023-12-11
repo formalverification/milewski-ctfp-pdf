@@ -1,1 +1,1 @@
-eval (f , a) = f a
+eval (f , x) = f x
