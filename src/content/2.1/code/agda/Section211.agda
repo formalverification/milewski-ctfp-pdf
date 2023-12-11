@@ -1,24 +1,23 @@
 module Section211 where
 
 private variable
-  A B C : Set
+  a b c : Set
 
 -- non-dependent version
-_∘_ : (B → C) → (A → B) → A → C
+_∘_ : (b → c) → (a → b) → a → c
 f ∘ g = λ x → f (g x)
 
-module snippet01 {g : A → B}{f : B → C} where
-  h : A → C
+module snippet01 {g : a → b}{f : b → c} where
+  h : a → c
   h = f ∘ g
 
-module snippet02 {f : A → B}{g : B → C} where
-  h : A → C
+module snippet02 {f : a → b}{g : b → c} where
+  h : a → c
   h x = let y = f x
         in g y
 
-
 -- dependent version
-_∘ᵈ_ :  ∀{a b c}{A : Set a}{B : A → Set b}{C : {x : A} → B x → Set c}
-  →     (∀{x}(y : B x) → C y) → (g : (x : A) → B x)
-  →     ((x : A) → C (g x))
+_∘ᵈ_ :  ∀{ℓ₁ ℓ₂ ℓ₃}{a : Set ℓ₁}{b : a → Set ℓ₂}{c : {x : a} → b x → Set ℓ₃}
+  →     (∀{x}(y : b x) → c y) → (g : (x : a) → b x)
+  →     ((x : a) → c (g x))
 f ∘ᵈ g = λ x → f (g x)
