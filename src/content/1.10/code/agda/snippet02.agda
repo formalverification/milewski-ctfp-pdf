@@ -1,2 +1,1 @@
-private variable A : Set
-α : F A → G A
+α : F a → G a

@@ -1,3 +1,3 @@
 instance
-  readerFunctor : Functor (Reader E)
+  readerFunctor : Functor (Reader e)
   readerFunctor .fmap f (reader g) = reader (f ∘ g)

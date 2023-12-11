@@ -1,3 +1,3 @@
-record Op (R : Set)(A : Set) : Set where
+record Op (r : Set)(a : Set) : Set where
   constructor op
-  field runOp : A → R
+  field runOp : a → r

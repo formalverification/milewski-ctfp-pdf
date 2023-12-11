@@ -1,1 +1,1 @@
-α : Reader ⊤ A → Maybe A
+α : Reader ⊤ a → Maybe a

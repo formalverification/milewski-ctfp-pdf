@@ -73,7 +73,6 @@ complete the diagram in 𝒟.
                 αᵤ : F u → G u
                 α̬ : F v → G v
 
-
                 G ----→ G u
               /        ↗   \
             /         αᵤ     \
@@ -86,8 +85,6 @@ complete the diagram in 𝒟.
          |  .            \    α̬
          ↓.               ↘  /
          v ----- F -----→ F v
-
-
 
 Now we have two ways of getting from F a to G b. To make sure that they are equal,
 we must impose the *naturality condition* that holds for every f:
@@ -115,7 +112,6 @@ in 𝒟 for every morphism in 𝒞.
                                                                                  -}
 
 {- 10.1 Polymorphic Functions ----------------------------------------------------}
-
 {- Functors (or, more specifically, endofunctors) in programming correspond to type
 constructors that map types to types. They also map functions to functions, and this
 mapping is implemented by a higher order function called fmap.
@@ -125,26 +121,25 @@ One functor, F, maps u to the type F u, while another functor, G, maps it to G u
 The component of a natural transformation α at u is a function from F u to G u.
 
 A natural transformation is a polymorphic function defined for all types u.      -}
-
 private variable
-  A B C E R : Set
+  a b c e r : Set
   F G : Set → Set
-  f : A → A
+  f : a → a
 
 module snippet01 where
-  α : ∀ A → F A → G A
+  α : ∀ a → F a → G a
   α = {!!}
 
-{- The code ∀ A is optional, and we could instead write it using the private
-variable A declared above, like this:                                            -}
+{- The code ∀ a is optional, and we could instead write it using the private
+variable a declared above, like this:                                            -}
 module snippet02-03 where
-  α : F A → G A
+  α : F a → G a
   α = {!!}
 
-{-
-Haskell's parametric polymorphism has an unexpected consequence: every polymorphic
-function of the type α : F A → G A, where F and G are functors, automatically satisfies
-the naturality condition. Here it is in categorical notation (f : u → v).
+{- Haskell's parametric polymorphism has an unexpected consequence: every
+polymorphic function of the type α : F a → G a, where F and G are functors,
+automatically satisfies the naturality condition. Here it is in categorical
+notation (f : u → v).
 
        G f ∘ αᵤ = α̬  ∘ F f
 
@@ -189,19 +184,17 @@ Let's see a few examples of natural transformations in Haskell. The first is
 between the list functor, and the Maybe functor. It returns the head of the
 list, but only if the list is non-empty:
                                                                      [snippet04] -}
-safeHead : List A → Maybe A
+safeHead : List a → Maybe a
 safeHead [] = nothing
 safeHead (x ∷ xs) = just x
 
-{- It's a function polymorphic in A. It works for any type A, with no limitations,
+{- It's a function polymorphic in a. It works for any type a, with no limitations,
 so it is an example of parametric polymorphism. Therefore it is a natural
 transformation between the two functors. But just to convince ourselves, let's
 verify the naturality condition.                                                 -}
-
 module snippet05 where
   open RawFunctor ⦃...⦄ renaming (_<$>_ to fmap)
-
-  nc :  ∀{A : Set}{f : A → A}(l : List A)
+  nc :  ∀{a : Set}{f : a → a}(l : List a)
     →   (fmap f ∘ safeHead) l ≡ (safeHead ∘ fmap f) l
   nc [] = refl
   nc (x ∷ l) = refl
@@ -210,8 +203,7 @@ module snippet05 where
 denotes fmap by _<$>_.                                                           -}
 module _ where
   open RawFunctor ⦃...⦄
-
-  nc :  ∀{A : Set}{f : A → A}(l : List A)
+  nc :  ∀{a : Set}{f : a → a}(l : List a)
     →   (f <$> safeHead l) ≡ safeHead (f <$> l)
   nc [] = refl
   nc (x ∷ l) = refl
@@ -225,13 +217,13 @@ and a non-empty list:
                                                                      [snippet09]
 We can implement fmap for lists...                                   [snippet10] -}
 module snippet10 where
-  fmap : (A → B) → List A → List B
+  fmap : (a → b) → List a → List b
   fmap f [] = []
   fmap f (x ∷ xs) = f x ∷ fmap f xs
 
 {- ...and for Maybe...                                               [snippet11] -}
 module snippet11 where
-  fmap : (A → B) → Maybe A → Maybe B
+  fmap : (a → b) → Maybe a → Maybe b
   fmap f nothing = nothing
   fmap f (just x) = just (f x)
 
@@ -241,57 +233,48 @@ and Data.Maybe.Instances modules.                                               
 
 record Functor (F : Set → Set) : Set₁ where
   constructor functor
-  field fmap : (A → B) → F A → F B
-
+  field fmap : (a → b) → F a → F b
 open Functor ⦃...⦄
 
 module snippet12 where
-
-
-  data Const (C A : Set) : Set where
-    const : C → Const C A
-
+  data Const (c a : Set) : Set where
+    const : c → Const c a
   {-                                                                 [snippet13] -}
-  unConst : Const C A → C
+  unConst : Const c a → c
   unConst (const c) = c
 
   instance
-    constFunctor : Functor (Const C)
-    constFunctor .fmap = λ f → λ where (const C) → const C
-
+    constFunctor : Functor (Const c)
+    constFunctor .fmap = λ f → λ where (const c) → const c
   {-                                                                 [snippet12] -}
-  length : List A → Const Int A
+  length : List a → Const Int a
   length [] = const 0ℤ
   length (x ∷ xs) = const (1ℤ + unConst (length xs))
 
-
-  {- length : List A → Int                                           [snippet14] -}
-
+  {- length : List a → Int                                           [snippet14] -}
   {-                                                                 [snippet15] -}
-  scam : Const Int A → Maybe A
+  scam : Const Int a → Maybe a
   scam (const x) = nothing
 
 module Reader where
-
   {-                                                                 [snippet16] -}
-  record Reader (E : Set) (A : Set) : Set where
+  record Reader (e : Set) (a : Set) : Set where
     constructor reader
-    field runReader : E → A
-
+    field runReader : e → a
   {-                                                                 [snippet17] -}
   instance
-    readerFunctor : Functor (Reader E)
+    readerFunctor : Functor (Reader e)
     readerFunctor .fmap f (reader g) = reader (f ∘ g)
 
-  {- Recall, Functor (Reader E) is (A → B) → Reader E A → Reader E B.
-  If g : E → A and f : A → B, then (reader g) : Reader E A, and the goal is to
-  construct an inhabitant of Reader E B.  To do so, we let the runReader map be
-  the function f ∘ g : E → B.                                                    -}
+  {- Recall, Functor (Reader e) is (a → b) → Reader e a → Reader e b.
+  If g : e → a and f : a → b, then (reader g) : Reader e a, and the goal is to
+  construct an inhabitant of Reader e b.  To do so, we let the runReader map be
+  the function f ∘ g : e → b.                                                    -}
 
   {- Consider the somewhat trivial unit type ⊤ with one element tt.  The functor
-  Reader ⊤ takes any type A and maps it into a function type ⊤ → A.
+  Reader ⊤ takes any type a and maps it into a function type ⊤ → a.
   This is just a family of functions, each of which picks a single element of type
-  A. There are as many such functions as there are elements of type A.           -}
+  a. There are as many such functions as there are elements of type a.           -}
 
   instance
     readerUnitFunctor : Functor (Reader ⊤)
@@ -299,7 +282,7 @@ module Reader where
 
   {- Now let's consider natural transformations from this functor to the Maybe
   functor:                                                           [snippet18] -}
-  α : Reader ⊤ A → Maybe A
+  α : Reader ⊤ a → Maybe a
   {- α (reader _) = nothing                                          [snippet19]
                                                                      [snippet20] -}
   α (reader g) = just (g tt)
@@ -321,41 +304,32 @@ contravariant functors are still natural transformations in the categorical sens
 except that they work on functors from the opposite category to Haskell types.
 
 Remember the example of a contravariant functor we looked at before:             -}
-
 record Contravariant (F : Set → Set) : Set₁ where
   constructor contravariant
-  field contramap : (B → A) → (F A -> F B)
-
+  field contramap : (b → a) → (F a -> F b)
 open Contravariant ⦃...⦄
 
 module Op where
   {-                                                                 [snippet21] -}
-  record Op (R : Set)(A : Set) : Set where
+  record Op (r : Set)(a : Set) : Set where
     constructor op
-    field runOp : A → R
-
-  {- This functor is contravariant in A:                             [snippet22] -}
+    field runOp : a → r
+  {- This functor is contravariant in a:                             [snippet22] -}
   instance
-    opContra : Contravariant (Op R)
+    opContra : Contravariant (Op r)
     opContra .contramap f (op g) = op (g ∘ f)
-
-  {- Contravariant (Op R) is (B → A) → (Op R A → Op R B).                -}
-
+  {- Contravariant (Op r) is (b → a) → (Op r a → Op r b).                -}
   {- We can write a polymorphic function from, say, Op Bool to Op String:        -}
-
-  predToStr : Op Bool A → Op String A
+  predToStr : Op Bool a → Op String a
   {-                                                                 [snippet23] -}
   predToStr (op f) = op λ x → if (f x) then "T" else "F"
-
   {- But since the two functors are not covariant, this is not a natural
   transformation in Hask. However, because they are both contravariant, they
   satisfy the "opposite" naturality condition:                       [snippet24] -}
-  _ : {f : B → A} → contramap f ∘ predToStr ≡ predToStr ∘ (contramap f)
+  _ : {f : b → a} → contramap f ∘ predToStr ≡ predToStr ∘ (contramap f)
   _ = refl
 
-
 {- 10.3 Functor Category ---------------------------------------------------------}
-
 {- Let's take a natural transformation α from functor F to functor G. Its component
 at object u is some morphism: αᵤ : F u → G u.
 
@@ -371,7 +345,6 @@ which is the composition of the two natural transformations β and α,
 
                     (β ∘ α)ᵤ = βᵤ ∘ αᵤ.
 
-
              F u ____
             ↗  \     \
            /    αᵤ     \
@@ -383,11 +356,9 @@ which is the composition of the two natural transformations β and α,
            \    βᵤ     /
             ↘  /     /
             H u ←----
-
                                                                                  -}
 
 {- 10.4 2-Categories -------------------------------------------------------------}
-
 {- 10.5 Conclusion ---------------------------------------------------------------}
 
 {- 10.6 Challenges ---------------------------------------------------------------}

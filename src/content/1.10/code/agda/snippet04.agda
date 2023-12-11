@@ -1,3 +1,3 @@
-safeHead : List A → Maybe A
+safeHead : List a → Maybe a
 safeHead [] = nothing
 safeHead (x ∷ xs) = just x

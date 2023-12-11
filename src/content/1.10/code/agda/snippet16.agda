@@ -1,3 +1,3 @@
-record Reader (E : Set) (A : Set) : Set where
+record Reader (e : Set) (a : Set) : Set where
   constructor reader
-  field runReader : E → A
+  field runReader : e → a
