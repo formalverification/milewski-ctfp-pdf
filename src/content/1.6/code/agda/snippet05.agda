@@ -1,2 +1,2 @@
-alpha-inv : A × B × C → (A × B) × C
+alpha-inv : a × b × c → (a × b) × c
 alpha-inv (x , y , z) = (x , y) , z

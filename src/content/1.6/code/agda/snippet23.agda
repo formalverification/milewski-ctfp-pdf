@@ -1,1 +1,1 @@
-Either A ⊥
+Either a ⊥

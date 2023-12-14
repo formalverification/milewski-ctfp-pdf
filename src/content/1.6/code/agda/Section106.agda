@@ -29,14 +29,14 @@ open import Data.Unit using (⊤; tt)
 open import Function using (case_of_)
 open import Relation.Binary.PropositionalEquality using (_≡_)
 
-variable A B C : Set
+variable a b c : Set
 
 {- Pairs are not strictly commutative: a pair in Int × Bool cannot be substituted
 for a pair Bool × Int, even though they carry the same information.  They are,
 however, commutative up to isomorphism---the isomorphism being given by the swap
 function (which is its own inverse, hence a so called "involution"):
                                                                      [snippet01] -}
-swap : (A × B) → (B × A)
+swap : (a × b) → (b × a)
 swap (x , y) = y , x
 
 {- You can think of the two pairs as simply using a different format for storing
@@ -44,24 +44,24 @@ the same data.  It's just like big endian vs. little endian.  You can combine an
 arbitrary number of types into a product by nesting pairs inside pairs, but there
 is an easier way: nested pairs are equivalent to tuples.  It's a consequence of
 the fact that different ways of nesting pairs are isomorphic.  If you want to
-combine three types, A, B, C, in a product, in that order, you can do it in two
+combine three types, a, b, c, in a product, in that order, you can do it in two
 ways:
 
-(A × B) × C                                                          [snippet02]
+(a × b) × c                                                          [snippet02]
 
 Or:
 
-A × B × C                                                            [snippet03]
+a × b × c                                                            [snippet03]
 
 These types are different---you can't pass one to a function that expects the
 other---but their elements are in one-to-one correspondence.  There is a function
 that maps one to the other:                                          [snippet04] -}
 
-alpha : (A × B) × C → A × B × C
+alpha : (a × b) × c → a × b × c
 alpha ((x , y) , z) = x , y , z
 
 {- and this function is invertible:                                   [snippet05] -}
-alpha-inv : A × B × C → (A × B) × C
+alpha-inv : a × b × c → (a × b) × c
 alpha-inv (x , y , z) = (x , y) , z
 
 {- so it's an isomorphism.  These are just different ways of repackaging the
@@ -69,18 +69,18 @@ same data. -}
 
 {- If we can live with isomorphisms, and don't insist on strict equality, then we
 can even show that the unit type, ⊤ , is the unit of the product the same way 1 is
-the unit of multiplication.  Indeed, the pairing of a value of some type A with a
+the unit of multiplication.  Indeed, the pairing of a value of some type a with a
 unit doesn't add any information.  The type
 
-                 A × ⊤                                                [snippet06]
+                 a × ⊤                                                [snippet06]
 
-is isomorphic to A.  Here's the isomorphism:                          [snippet07] -}
-rho : A × ⊤ → A
+is isomorphic to a.  Here's the isomorphism:                          [snippet07] -}
+rho : a × ⊤ → a
 rho (x , tt) = x
 
 {- and its inverse:                                                   [snippet08] -}
 
-rho-inv : A → A × ⊤
+rho-inv : a → a × ⊤
 rho-inv x = x , tt
 
 {- These observations can be formalized by saying that 𝕊𝕖𝕥 (the category of sets)
@@ -95,10 +95,10 @@ arguments. A pair, for instance, can be defined alternatively as:               
 module snippet9 where
   open import Data.Bool using (Bool; false; true; _∧_)
 {-                                                                   [snippet09] -}
-  data Pair (A B : Set) : Set where
-    P : A → B → Pair A B
+  data Pair (a b : Set) : Set where
+    P : a → b → Pair a b
 
-{- Here, Pair A B is the name of the type parameterized by two other types, A B;
+{- Here, Pair a b is the name of the type parameterized by two other types, a b;
 P is the name of the data constructor.  You define a pair *type* by passing two
 types to the type constructor Pair.  You construct a pair value by passing two
 values of the appropriate types to the data constructor P.  For instance, let's
@@ -108,7 +108,7 @@ define a value stmt as a pair of String and Bool:                    [snippet10]
   stmt = P "This statement is" false
 
 {- The first line is the type declaration.  It uses the type constructor Pair,
-with String and Bool replacing the A and B in the generic definition of Pair.  The
+with String and Bool replacing the a and b in the generic definition of Pair.  The
 second line defines the actual value by passing a concrete string and a concrete
 Boolean to the data constructor P.  Type constructors are used to construct types;
 data constructors, to construct values.
@@ -116,8 +116,8 @@ data constructors, to construct values.
 Since the name spaces for type and data constructors are separate in
 Haskell, you will often see the same name used for both.  However, in Agda this is
 not so and we must use a different name for the data constructor, as in:         -}
-data Pair (A b : Set) : Set where
-  pair : A → b → Pair A b
+data Pair (a b : Set) : Set where
+  pair : a → b → Pair a b
 
 {- If you squint hard enough, you may even view the built-in product type as a
 variation on this kind of declaration, where the name Pair is replaced with the
@@ -182,7 +182,7 @@ open Element
 
 {-                                                                   [snippet16] -}
 tupleToElem : String × String × ℤ → Element
-tupleToElem (n , s , A) = element s s A
+tupleToElem (n , s , a) = element s s a
 {-                                                                   [snippet17] -}
 elemToTuple : Element → String × String × ℤ
 elemToTuple e = name e , name e , atomicNumber e
@@ -225,29 +225,29 @@ module snippet20 where
 {- Just as the product in the category of sets gives rise to product types, the
 coproduct gives rise to sum types.  The canonical implementation of a sum type in
 Agda is:                                                             [snippet21] -}
-data Either (A B : Set) : Set where
-  Left  : A → Either A B
-  Right : B → Either A B
+data Either (a b : Set) : Set where
+  Left  : a → Either a b
+  Right : b → Either a b
 {- And like pairs, Eithers are commutative (up to isomorphism), can be nested, and
 the nesting order is irrelevant (up to isomorphism).  So we can, for instance,
 define a sum equivalent of a triple:                                 [snippet22] -}
-data OneOfThree (A B C : Set) : Set where
-  Sinistral : A → OneOfThree A B C
-  Medial    : B → OneOfThree A B C
-  Dextral   : C → OneOfThree A B C
+data OneOfThree (a b c : Set) : Set where
+  Sinistral : a → OneOfThree a b c
+  Medial    : b → OneOfThree a b c
+  Dextral   : c → OneOfThree a b c
 {- It turns out that 𝕊𝕖𝕥 is also a (symmetric) monoidal category with respect to
 coproduct.  The role of the binary operation is played by the disjoint sum, and
 the role of the unit element is played by the initial object.  In terms of types,
 we have Either as the monoidal operator and ⊥, the uninhabited type, as its
 neutral element.  You can think of Either as plus, and ⊥ as zero.  Indeed, adding
 ⊥ to a sum type doesn't change its content. For instance:            [snippet23] -}
-
-snippet23 : Either A ⊥
-snippet23 = {!   !}
-{- is isomorphic to A.  That's because there is no way to construct a Right
+_ : Either a ⊥
+_ = {!   !}
+{- is isomorphic to a.  That's because there is no way to construct a Right
 version of this type---there isn't a value of type ⊥.  The only inhabitants of
-Either A ⊥ are constructed using the Left constructors and they simply encapsulate
-a value of type A.  So, symbolically, A + 0 = A.                     [snippet24] -}
+Either a ⊥ are constructed using the Left constructors and they simply encapsulate
+a value of type a.  So, symbolically, a + 0 = a.
+                                                                     [snippet24] -}
 data Color : Set where
   Red   : Color
   Green : Color
@@ -258,9 +258,9 @@ module snippet25 where
     True False : Bool
 {-                                                                   [snippet26] -}
 module snippet26 where
-  data Maybe (A : Set) : Set where
-    Nothing : Maybe A
-    Just    : A → Maybe A
+  data Maybe (a : Set) : Set where
+    Nothing : Maybe a
+    Just    : a → Maybe a
 
 {- The Maybe type is a sum of two types.  You can see this if you separate the two
 constructors into individual types.  The first one would look like this:
@@ -269,21 +269,21 @@ data NothingType : Set where
   Nothing : NothingType
 {- It's an enumeration with one value called Nothing.  In other words, it's a
 singleton, which is equivalent to the unit type ⊤.  The second part: [snippet28] -}
-data JustType (A : Set) : Set where
-  Just : A → JustType A
+data JustType (a : Set) : Set where
+  Just : a → JustType a
 {-                                                                   [snippet29] -}
 module snippet29 where
   Maybe : Set₁
-  Maybe = ∀ (A : Set) → Either ⊤ A
+  Maybe = ∀ (a : Set) → Either ⊤ a
 {-                                                                   [snippet30] -}
 module snippet30 where
-  data List (A : Set) : Set where
-    Nil  : List A
-    Cons : A → List A → List A
+  data List (a : Set) : Set where
+    Nil  : List a
+    Cons : a → List a → List a
 
   open import snippet26
   {-                                                                 [snippet31] -}
-  maybeTail : List A → Maybe (List A)
+  maybeTail : List a → Maybe (List a)
   maybeTail Nil = Nothing
   maybeTail (Cons _ t) = Just t
 
@@ -299,31 +299,31 @@ by zero give zero?  In other words, is a product type with one component being
 ⊥ isomorphic to ⊥?  For example, is it possible to create a pair of, say ℤ and ⊥?
 
 To create a pair you need two values.  Although you can easily come up with an
-integer, there is no value of type ⊥.  Therefore, for any type A, the type
-A × ⊥ is uninhabited and is therefore equivalent to ⊥.  In other words, A × 0 = 0.
+integer, there is no value of type ⊥.  Therefore, for any type a, the type
+a × ⊥ is uninhabited and is therefore equivalent to ⊥.  In other words, a × 0 = 0.
 
 Another thing that links addition and multiplication is the distributive property:
 
-               A × (B + C) ≡ A × B + A × C
+               a × (b + c) ≡ a × b + a × c
 
 Does it also hold for product and sum types?  Yes, it does---up to isomorphisms,
 as usual.  The left-hand side corresponds to the type:               [snippet32] -}
-snippet32 : A × Either B C
+snippet32 : a × Either b c
 snippet32 = {!   !}
 {- and the right hand side corresponds to the type:                  [snippet33] -}
-snippet33 : Either (A × B) (A × C)
+snippet33 : Either (a × b) (a × c)
 snippet33 = {!   !}
 {- Here's the function that converts them one way:                   [snippet34] -}
-prodToSum : A × Either B C → Either (A × B) (A × C)
+prodToSum : a × Either b c → Either (a × b) (a × c)
 prodToSum (x , Left y)  = Left (x , y)
 prodToSum (x , Right z) = Right (x , z)
 {- and here's one that goes the other way:                           [snippet35] -}
-sumToProd : Either (A × B) (A × C) → A × Either B C
+sumToProd : Either (a × b) (a × c) → a × Either b c
 sumToProd e = case e of λ where
   (Left  (x , y)) → x , Left  y
   (Right (x , z)) → x , Right z
 {- alternatively -}
-sumToProd' : Either (A × B) (A × C) → A × Either B C
+sumToProd' : Either (a × b) (a × c) → a × Either b c
 sumToProd' (Left (x , y))  = x , Left y
 sumToProd' (Right (x , z)) = x , Right z
 {- The case_of_ statement is used for pattern matching inside functions.  Each
@@ -339,17 +339,16 @@ Left (2, "Hi!"), as expected.
 
 Such intertwined monoids are called *semirings*.  These are not full rings because
 we can't define subtraction of types.  That's why a semiring is sometimes called a
-*rig*---a ``ring without an n'' (negative).  Barring that, we can get a lot of
+*rig*---a "ring without an n" (negative).  Barring that, we can get a lot of
 mileage from translating statements about, say, natural numbers, which form a rig,
 to statements about types.                                          [snippet37] -}
-
-data List (A : Set) : Set where
-  Nil : List A
-  Cons : A → List A → List A
+data List (a : Set) : Set where
+  Nil : List a
+  Cons : a → List a → List a
 
 {- Section 6.5. Challenges -------------------------------------------------------}
 
-{- 1. Show the isomorphism between Maybe A and Either ⊤ A.                       -}
+{- 1. Show the isomorphism between Maybe a and Either ⊤ a.                       -}
 
 {- 2. Here's a sum type defined in Haskell:
 
@@ -380,5 +379,5 @@ data List (A : Set) : Set where
       necessary updates.  What code did you have to touch in Haskell vs. C++ or
       Java?  (Even if you're not a Haskell programmer, the modifications should be
       pretty obvious.)                                                           -}
-{- 5. Show that A + A = 2 × A holds for types (up to isomorphism).  Remember that
+{- 5. Show that a + a = 2 × a holds for types (up to isomorphism).  Remember that
       2 corresponds to Bool, according to our translation table.                 -}

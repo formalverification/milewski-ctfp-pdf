@@ -1,2 +1,2 @@
-data JustType (A : Set) : Set where
-  Just : A → JustType A
+data JustType (a : Set) : Set where
+  Just : a → JustType a
