@@ -1,1 +1,1 @@
-r → A × B ~ (R → A , R → B)
+r → a × b ~ (r → a , r → b)

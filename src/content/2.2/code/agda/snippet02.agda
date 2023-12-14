@@ -1,2 +1,2 @@
-contramap : (C' → C) → (C -> LimD) → C' -> LimD
+contramap : (c' → c) → (c → LimD) → c' → LimD
 contramap f u = u ∘ f

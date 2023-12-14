@@ -1,1 +1,1 @@
-ToString (Either B C) ~ (B → String , C → String)
+ToString (Either b c) ~ (b → String , c → String)

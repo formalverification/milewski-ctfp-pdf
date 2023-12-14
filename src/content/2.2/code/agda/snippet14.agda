@@ -1,3 +1,3 @@
-p : D → A
-q : D → C
-r : D → B
+p : d → a
+q : d → c
+r : d → b

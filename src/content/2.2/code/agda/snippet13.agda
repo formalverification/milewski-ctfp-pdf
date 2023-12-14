@@ -1,2 +1,2 @@
-f : A → B
-g : C → B
+f : a → b
+g : c → b

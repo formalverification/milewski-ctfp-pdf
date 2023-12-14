@@ -1,3 +1,3 @@
-record ToString (A : Set) : Set where
+record ToString (a : Set) : Set where
   constructor toString
-  field runToString : A → String
+  field runToString : a → String

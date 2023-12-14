@@ -1,2 +1,2 @@
-p : C → A
-q : C → B
+p : c → a
+q : c → b
