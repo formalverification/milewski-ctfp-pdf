@@ -1,9 +1,9 @@
-record Monoid (A : Set) : Set where
+record Monoid (a : Set) : Set where
   field
-    mempty  :  A
-    mappend :  A → A → A
+    mempty  :  a
+    mappend :  a → a → a
     -- In Agda we can encode the laws that a monoid satisfies.
-    idˡ    :  ∀ a → mappend mempty a ≡ a
-    idʳ    :  ∀ a → mappend a mempty ≡ a
-    assoc  :  ∀ a b c
-              → mappend (mappend a b) c ≡ mappend a (mappend b c)
+    idˡ    :  ∀ x → mappend mempty x ≡ x
+    idʳ    :  ∀ x → mappend x mempty ≡ x
+    assoc  :  ∀ x y z
+              → mappend (mappend x y) z ≡ mappend x (mappend y z)

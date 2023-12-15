@@ -1,5 +1,5 @@
 instance
-  listMonoid : ∀ {A : Set} → Monoid (List A)
+  listMonoid : ∀ {a : Set} → Monoid (List a)
   listMonoid = record
                 { mempty = []
                 ; mappend = _++_

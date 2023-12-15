@@ -1,2 +1,2 @@
-hom : (A → B) → Set
-hom h = ∀{a₁ a₂} → h (a₁ *ᴬ a₂) ≡ h a₁ *ᴮ h a₂
+hom : (a → b) → Set
+hom h = ∀{x y} → h (x *ᴬ y) ≡ h x *ᴮ h y
