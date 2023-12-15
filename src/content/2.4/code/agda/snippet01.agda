@@ -1,1 +1,2 @@
-type Reader a x = a -> x
+data Reader a x : Set where
+  reader : (a → x) → Reader a x

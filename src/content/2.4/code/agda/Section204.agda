@@ -152,6 +152,143 @@ to a mapping from the opposite category, we can state this fact succinctly as:
                 ℂ(-, =) : ℂᵒᵖ × ℂ → 𝕊𝕖𝕥                                           -}
 
 {- 14.2 Representable Functors ---------------------------------------------------}
+{- We've seen that, for every choice of an object a in ℂ, we get a functor from ℂ
+to 𝕊𝕖𝕥.  This kind of structure-preserving mapping to 𝕊𝕖𝕥 is often called a
+representation.  We are representing objects and morphisms of ℂ as sets and
+functions in 𝕊𝕖𝕥.
+
+The functor ℂ(a, -) itself is sometimes called representable.  More generally, any
+functor F that is naturally isomorphic to the hom-functor, for some choice of a,
+is called representable.  Such a functor must necessarily be 𝕊𝕖𝕥-valued, since
+ℂ(a, -) is.
+
+I said before that we often think of isomorphic sets as identical.  More
+generally, we think of isomorphic *objects* in a category as identical.  That's
+because objects have no structure other than their relation to other objects (and
+themselves) through morphisms.
+
+For instance, we've previously talked about the category of monoids, 𝕄𝕠𝕟, that was
+initially modeled with sets.  But we were careful to pick as morphisms only those
+functions that preserved the monoidal structure of those sets.  So if two objects
+in 𝕄𝕠𝕟 are isomorphic, meaning there is an invertible morphism between them, they
+have exactly the same structure.  If we peeked at the sets and functions that they
+were based upon, we'd see that the unit element of one monoid was mapped to the
+unit element of another, and that a product of two elements was mapped to the
+product of their mappings.
+
+The same reasoning can be applied to functors.  Functors between two categories
+form a category in which natural transformations play the role of morphisms.  So
+two functors are isomorphic, and can be thought of as identical, if there is an
+invertible natural transformation between them.
+
+Let's analyze the definition of the representable functor from this
+perspective. For F to be representable we require that: There
+be an object a in ℂ$; one natural transformation $α$ from
+ℂ(a, -) to F; another natural transformation, $\beta$, in
+the opposite direction; and that their composition be the identity
+natural transformation.
+
+Let's look at the component of α at some object x.  It's a function in 𝕊𝕖𝕥:
+α(x) : ℂ(a, x) → F x. The naturality condition for this transformation tells us
+that, for any morphism f from $x$ to $y$, the following diagram
+commutes: F f ∘ α(x) = α(y) ∘ ℂ(a, f)
+In Haskell, we would replace natural transformations with polymorphic
+functions:                                                           [snippet06] -}
+
+{- with the optional ∀ quantifier. The naturality condition          [snippet07] -}
+
+{- is automatically satisfied due to parametricity (it's one of those theorems for
+free I mentioned earlier), with the understanding that fmap on the left is defined
+by the functor F, whereas the one on the right is defined by the reader functor.
+Since fmap for reader is just function precomposition, we can be even more
+explicit.  Acting on h, an element of ℂ(a, x), the naturality condition simplifies
+to:                                                                  [snippet08] -}
+
+{- The other transformation, β, goes the opposite way:               [snippet09] -}
+
+{- It must respect naturality conditions, and it must be the inverse of α:
+
+                      α ∘ β = id = β ∘ α
+
+We will see later that a natural transformation from ℂ(a, -)
+to any 𝕊𝕖𝕥-valued functor always exists as long as F a is
+non-empty (Yoneda's lemma) but it is not necessarily invertible.
+
+Let me give you an example in Haskell with the list functor and Int as a.  Here's
+a natural transformation that does the job:                          [snippet10] -}
+
+{- We arbitrarily picked the number 12 and created a singleton list with it.  We
+can then fmap the function h over this list and get a list of the type returned by
+h.  (There are actually as many such transformations as there are list of integers.)
+
+The naturality condition is equivalent to the composability of map (the list
+version of fmap):                                                     [snippet11] -}
+
+{- But if we tried to find the inverse transformation, we would have to go from a
+list of arbitrary type x to a function returning x:                   [snippet12] -}
+
+{- You might think of retrieving an x from the list, e.g., using head, but that
+won't work for an empty list. Notice that there is no choice for the type a (in
+place of Int) that would work here. So the list functor is not representable.
+
+Remember when we talked about Haskell (endo-) functors being a little
+like containers? In the same vein we can think of representable functors
+as containers for storing memoized results of function calls (the
+members of hom-sets in Haskell are just functions). The representing
+object, the type a in ℂ(a, -), is thought of as the
+key type, with which we can access the tabulated values of a function.
+The transformation we called α is called tabulate, and its inverse, β, is called
+index.  Here's a (slightly simplified) Representable class definition:
+                                                                     [snippet13] -}
+
+{- Notice that the representing type, our a, which is called Rep f here, is part
+of the definition of Representable. The star just means that Rep f is a type (as
+opposed to a type constructor, or other more exotic kinds).
+
+Infinite lists, or streams, which cannot be empty, are representable.            -}
+{-                                                                   [snippet14] -}
+
+{- You can think of them as memoized values of a function taking an Integer as an
+argument. (Strictly speaking, I should be using non-negative natural numbers, but
+I didn't want to complicate the code.)
+
+To tabulate such a function, you create an infinite stream of values.  Of course,
+this is only possible because Haskell is lazy.  The values are evaluated on
+demand.  You access the memoized values using index:                 [snippet15] -}
+
+{- It's interesting that you can implement a single memoization scheme to
+cover a whole family of functions with arbitrary return types.
+
+Representability for contravariant functors is similarly defined, except
+that we keep the second argument of ℂ(-, a) fixed.  Or, equivalently, we may
+consider functors from ℂᵒᵖ to 𝕊𝕖𝕥, because ℂᵒᵖ(a, -) is the same as ℂ(-, a).
+
+There is an interesting twist to representability. Remember that
+hom-sets can internally be treated as exponential objects, in Cartesian
+closed categories. The hom-set ℂ(a, x) is equivalent to
+$x^a$, and for a representable functor F we can write: $-^a = F$.
+
+Let's take the logarithm of both sides, just for kicks: $a = \mathbf{log}F$
+
+Of course, this is a purely formal transformation, but if you know some
+of the properties of logarithms, it is quite helpful. In particular, it
+turns out that functors that are based on product types can be
+represented with sum types, and that sum-type functors are not in
+general representable (example: the list functor).
+
+Finally, notice that a representable functor gives us two different
+implementations of the same thing --- one a function, one a data
+structure. They have exactly the same content --- the same values are
+retrieved using the same keys. That's the sense of ``sameness'' I was
+talking about. Two naturally isomorphic functors are identical as far as
+their contents are involved. On the other hand, the two representations
+are often implemented differently and may have different performance
+characteristics. Memoization is used as a performance enhancement and
+may lead to substantially reduced run times. Being able to generate
+different representations of the same underlying computation is very
+valuable in practice. So, surprisingly, even though it's not concerned
+with performance at all, category theory provides ample opportunities to
+explore alternative implementations that have practical value.     -}
 
 {- 14.3 Challenges ---------------------------------------------------------------}
 
