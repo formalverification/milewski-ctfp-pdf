@@ -101,7 +101,8 @@ instance
 open import Agda.Builtin.Unit
 
 Maybe : Set → Set
-Maybe A = Const ⊤ A ⊎ Identity A
+Maybe a = Const ⊤ a ⊎ Identity a
 
-Maybe‵ : Set → Set
-Maybe‵ A = Either (Const ⊤ A) (Identity A)
+Maybe′ : Set → Set
+Maybe′ a = Either (Const ⊤ a) (Identity a)
+
