@@ -44,7 +44,7 @@ open import Data.Sum using (_⊎_; [_,_]; inj₁; inj₂)
 
 instance
   _ : Bifunctor _⊎_
-  _ = record { bimap = bimap  } where
+  _ = record { bimap = bimap } where
     bimap : (a → c) → (b → d) → a ⊎ b → c ⊎ d
     bimap a→c _   (inj₁ a) = inj₁ (a→c a)
     bimap _   b→d (inj₂ b) = inj₂ (b→d b)
@@ -64,7 +64,6 @@ instance
 
 {- 8.3 Functorial Algebraic Data Types -------------------------------------------}
 {-                                                                   [snippet05] -}
-
 record Identity (a : Set) : Set where
   constructor mkId
   field identity : a
