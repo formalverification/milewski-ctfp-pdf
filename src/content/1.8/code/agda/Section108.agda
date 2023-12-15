@@ -1,6 +1,5 @@
 module Section108 where
 
-open import Agda.Builtin.Unit
 open import Relation.Binary.PropositionalEquality using (_≡_)
 
 private
@@ -71,7 +70,7 @@ record Identity (a : Set) : Set where
   field identity : a
 
 record Functor (f : Set → Set) : Set₁ where
-  -- constructor mkFunctor
+  constructor mkFunctor
   field fmap : (a → b) → f a → f b
 
 {-                                                                   [snippet06] -}
@@ -100,6 +99,7 @@ instance
     fm _ (mkConst co) = mkConst co
 
 {-                                                                   [snippet08] -}
+open import Agda.Builtin.Unit
 
 Maybe : Set → Set
 Maybe A = Const ⊤ A ⊎ Identity A

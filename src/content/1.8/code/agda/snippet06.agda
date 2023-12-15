@@ -1,5 +1,5 @@
 instance
   _ : Functor Identity
-  _ = record { fmap = fmap } where
-    fmap : {A B : Set} → (A → B) → Identity A → Identity B
-    fmap A→B (mkId a) = mkId (A→B a)
+  _ = record { fmap = fm } where
+      fm : (f : a → b) → Identity a → Identity b
+      fm f (mkId ia) = mkId (f ia)
