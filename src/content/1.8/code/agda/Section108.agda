@@ -63,56 +63,46 @@ instance
       bimap f _ (Left x) = Left (f x)
       bimap _ g (Right y) = Right (g y)
 
--- {- 8.3 Functorial Algebraic Data Types -}
+{- 8.3 Functorial Algebraic Data Types -------------------------------------------}
+{-                                                                   [snippet05] -}
 
--- data Identity (A : Set) : Set where
---   mkId : A → Identity A
+record Identity (a : Set) : Set where
+  constructor mkId
+  field identity : a
 
--- record Functor (F : Set → Set) : Set₁ where
---   constructor mkFunctor
---   field fmap : (A → B) → F A → F B
+record Functor (f : Set → Set) : Set₁ where
+  -- constructor mkFunctor
+  field fmap : (a → b) → f a → f b
 
--- instance
---   _ : Functor Identity
---   _ = record { fmap = fmap } where
---     fmap : {A B : Set} → (A → B) → Identity A → Identity B
---     fmap A→B (mkId a) = mkId (A→B a)
+{-                                                                   [snippet06] -}
+open Functor
+open Identity
 
--- module snippet07 where
---   data Maybe (A : Set) : Set where
---     Nothing : Maybe A
---     Just : A → Maybe A
+instance
+  _ : Functor Identity
+  _ = record { fmap = fm } where
+      fm : (f : a → b) → Identity a → Identity b
+      fm f (mkId ia) = mkId (f ia)
 
--- data Const (C A : Set) : Set where
---   mkConst : C → Const C A
+{-                                                                   [snippet07] -}
+module snippet07 where
+  data Maybe (a : Set) : Set where
+    Nothing : Maybe a
+    Just : a → Maybe a
 
--- module snippet08 where
---   Maybe : Set → Set
---   Maybe A = Const ⊤ A ⊎ Identity A
+data Const (c a : Set) : Set where
+  mkConst : c → Const c a
 
--- private
---   variable
---     BF : Set → Set → Set
---     F G : Set → Set
+instance
+  _ : Functor (Const c)
+  _ = record { fmap = fm } where
+    fm : (f : a → b) → Const c a → Const c b
+    fm _ (mkConst co) = mkConst co
 
--- module snippet09 where
---   record BiComp
---     (bf : Bifunctor BF)(fu : Functor F)(gu : Functor G) : Set where
---       constructor bicomp
---   -- data BiComp
---   --     (A B : Set)
---   --     (FU GU : Functor) :
---   --       Bifunctor where
---   --   bicomp : Set _
+{-                                                                   [snippet08] -}
 
---   -- data BiComp (BF : Bifunctor) (FU GU : Functor) (A B : Set) : Set where
---   --   bicomp : BiComp ?
---   -- BiComp : ∀ (A B : Set) → (FU : Functor)(GU : Functor) → (BF : Bifunctor) → ?
---   -- BiComp = ?
---   -- BiComp : (BF : Bifunctor) → (FU GU : Functor) → (A B : Set) → Set → Set₂
---   -- BiComp = ?
---   -- BiComp : ∀ (A : Set) (B : Set)
---   --          → (FU : Functor) → (GU : Functor)
---   --          → (BF : Bifunctor)
---   --          → {! Functor  !}
---   -- BiComp = ? -- BF (FU A) (GU B)
+Maybe : Set → Set
+Maybe A = Const ⊤ A ⊎ Identity A
+
+Maybe‵ : Set → Set
+Maybe‵ A = Either (Const ⊤ A) (Identity A)
