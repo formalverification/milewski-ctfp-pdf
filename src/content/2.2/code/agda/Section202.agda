@@ -1,6 +1,6 @@
 {- Chapter 12. Limits and Colimits -}
 
-module Section212 where
+module Section202 where
 
 open import Agda.Builtin.Float
 open import Data.Product using (_×_; _,_; ∃-syntax)
@@ -47,18 +47,15 @@ module snippet03 {a b c : Set} where
           /  _ f _  \
          ↓ /       ↘ ↓
          a --- g --→ b
-
                                                                      [snippet04] -}
   p : c → a
   q : c → b
   p = {!!}; q = {!!}
-
 {-                                                                   [snippet05] -}
   _ : q ≡ f ∘ p
   _ = {!!}
   _ : q ≡ g ∘ p
   _ = {!!}
-
 {-                                                                   [snippet06] -}
   _ : f ∘ p ≡ g ∘ p
   _ = {!!}
@@ -85,7 +82,6 @@ module snippet07 where
   {-                                                                 [snippet11] -}
   _ : p' ≡ p ∘ h
   _ = {!!}
-
   {-                                                                 [snippet12] -}
   h ⊤ = 0ℤ
 
@@ -99,7 +95,6 @@ module snippet13 {a b c d : Set} where
   q : d → c
   r : d → b
   p = {!!}; q = {!!}; r = {!!}
-
   {-
       a -- f --→ b ←-- g -- c  cospan: three objects (a, b, c) and two morphisms
                                        (f : a → b ← c : g)
@@ -148,7 +143,6 @@ module snippet16 {a : Set} where
   _ : ∃[ x ] f x ≡ 1.23
   _ = {!!}
 
-
 {- 12.3 Colimits -----------------------------------------------------------------}
 
 {- 12.4 Continuity ---------------------------------------------------------------}
@@ -167,7 +161,6 @@ module snippet17 {a b : Set} where
   instance
     tostring : Contravariant ToString
     tostring .contramap f (toString g) = toString (g ∘ f)
-
 {-
 ToString (Either b c) ~ (b → String, c → String)                     [snippet18] -}
 {-                                                                   [snippet19] -}
