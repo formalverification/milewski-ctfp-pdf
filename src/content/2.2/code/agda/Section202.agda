@@ -147,17 +147,18 @@ module snippet16 {a : Set} where
 
 {- 12.4 Continuity ---------------------------------------------------------------}
 
-module snippet17 {a b : Set} where
-  record ToString (a : Set) : Set where
-    constructor toString
-    field runToString : a → String
 
+module snippet17 {a b : Set} where
   record Contravariant (F : Set → Set) : Set₁ where
     constructor contravariant
     field contramap : (b → a) → (F a -> F b)
 
   open Contravariant ⦃...⦄
 
+  {-                                                                 [snippet17] -}
+  record ToString (a : Set) : Set where
+    constructor toString
+    field runToString : a → String
   instance
     tostring : Contravariant ToString
     tostring .contramap f (toString g) = toString (g ∘ f)
@@ -165,4 +166,3 @@ module snippet17 {a b : Set} where
 ToString (Either b c) ~ (b → String, c → String)                     [snippet18] -}
 {-                                                                   [snippet19] -}
 {- r → a × b ~ (r → a , r → b)                                                   -}
-
