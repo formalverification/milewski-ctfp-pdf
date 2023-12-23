@@ -33,10 +33,11 @@ instance
                 ; idˡ = λ _ → refl
                 ; idʳ = ++-identityʳ
                 ; assoc = ++-assoc }
+pattern [_,_] y z = y ∷ z ∷ []
 {-                                                                   [snippet03] -}
 _ : 2 * 3 ≡ 6
 _ = refl  -- 2 * 3 and 6 are identified
-_ : [ 2 ] ++ [ 3 ] ≡ 2 ∷ 3 ∷ []
+_ : [ 2 ] ++ [ 3 ] ≡ [ 2 , 3 ]
 _ = refl  -- whereas [ 2 ] ++ [ 3 ] and [6] are not identified
 
 {- Section 13.2 Free Monoid Universal Construction -------------------------------}
@@ -49,7 +50,7 @@ module snippet04 where
       h : a → b
       hom : ∀{x y} → h (x *ᴬ y) ≡ h x *ᴮ h y
 {-                                                                   [snippet05] -}
-_ : [ 2 ] ++ [ 3 ] ≡ 2 ∷ 3 ∷ []
+_ : [ 2 ] ++ [ 3 ] ≡ [ 2 , 3 ]
 _ = refl
 {-                                                                   [snippet06] -}
 _ : 2 * 3 ≡ 6
