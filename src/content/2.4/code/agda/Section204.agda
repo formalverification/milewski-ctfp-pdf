@@ -3,22 +3,19 @@
 module Section204 where
 
 open import Agda.Builtin.Nat using (_+_; _-_; _==_)
-open import Data.Bool.Base               using (if_then_else_)
-open import Data.Integer using (ℤ; 0ℤ; +_)
-open import Data.List using (List; map; [_]) -- ; _∷_; head)
+open import Data.Bool.Base using (if_then_else_)
+open import Data.Integer using (ℤ; +_)
+open import Data.List using (List; map; [_])
 open import Data.Nat using (ℕ)
-open import Data.Product using (_×_; _,_)
-open import Function using (_∘_; id; flip)
-open import Level using (0ℓ)
+open import Function using (_∘_; id)
 open import Relation.Binary.PropositionalEquality using (_≡_; refl)
-private variable a b c d r u v w x y : Set
+private variable a b c d x y : Set
 
 {- Main points from intro:
    - the set of all sets doesn't exist
    - the category of all sets, 𝕊𝕖𝕥, exists.
    - morphisms between any two objects in a category form a set (called hom-set)
-   - cats where morphisms may form hom-objects (not hom-sets) are *enriched* cats
--}
+   - cats where morphisms may form hom-objects (not hom-sets) are *enriched* cats-}
 
 {- 14.1 The Hom Functor ----------------------------------------------------------}
 {- Every category comes equipped with a canonical family of mappings to 𝕊𝕖𝕥.
@@ -26,17 +23,20 @@ Those mappings are functors, so they preserve the structure of the category.
 
 Fix a ∈ ℂ.  For each x ∈ ℂ, ℂ(a, x) is a set, so we have a mapping ℂ(a, -) : ℂ → 𝕊𝕖𝕥.
 
-                        ℂ
-                          a              𝕊𝕖𝕥
+                          ℂ             𝕊𝕖𝕥
+
+                          a
                         / | \
-                       |  |  |
-                        \ | /   ----→  ℂ(a, x)
+                       |  |  |  ----→  ℂ(a, x)
+                        \ | /
                          ↘↓↙
                           x
 
 (imho, the syntax λ x → ℂ(a, x) is nicer and clearer than ℂ(a, -))
 
 If f : x → y in ℂ, then f is mapped to a function in ℂ(a, x) → ℂ(a, y)
+
+            ℂ                            𝕊𝕖𝕥
 
           .→ x
          /   ↑ \
@@ -51,8 +51,7 @@ If f : x → y in ℂ, then f is mapped to a function in ℂ(a, x) → ℂ(a, y)
         \    |  /
          \   ↓ ↙
           -→ y
-
-                  ℂ(a, f) h = f ∘ h.
+                       ℂ(a, f) h = f ∘ h.
 
 In Haskell, the hom-functor is better known as the Reader functor:   [snippet01] -}
 data Reader a x : Set where
