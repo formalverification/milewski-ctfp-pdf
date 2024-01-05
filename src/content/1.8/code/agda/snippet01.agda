@@ -1,12 +1,9 @@
-record Bifunctor (f : Set → Set → Set) : Set₁ where
+record Bifunctor (F : Set → Set → Set) : Set₁ where
   field
-    bimap : (a → c) → (b → d) → f a b → f c d
+    bimap : (A → C) → (B → D) → F A B → F C D
 
-  first : (a → c) → f a b → f c b
+  first : (A → C) → F A B → F C B
   first g = bimap g id
 
-  second : (b → d) → f a b → f a d
-  second h = bimap id h
-
-  bimap-law : (a → c) → (b → d) → Set
-  bimap-law g h =  (first g) ∘ (second h) ≡ bimap g h
+  second : (B → D) → F A B → F A D
+  second = bimap id

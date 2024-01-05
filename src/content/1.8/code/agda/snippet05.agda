@@ -1,3 +1,2 @@
-record Identity (a : Set) : Set where
-  constructor mkId
-  field identity : a
+record Identity (A : Set) : Set where
+  field identity : A

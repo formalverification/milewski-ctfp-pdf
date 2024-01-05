@@ -1,1 +1,1 @@
-bimap : (a → c) → (b → d) → f a b → f c d
+bimap : (A → C) → (B → D) → A × B → C × D

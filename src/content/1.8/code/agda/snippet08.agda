@@ -1,2 +1,2 @@
 Maybe : Set → Set
-Maybe A = Const ⊤ A ⊎ Identity A
+Maybe A = Either (Const ⊤ A) (Identity A)
